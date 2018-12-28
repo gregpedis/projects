@@ -11,6 +11,7 @@ h1 {
   }
   body {
     margin: 2em;
+    height : 100%;
   }
   body, input[type="text"], button {
     color: #888;
