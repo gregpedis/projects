@@ -10,6 +10,9 @@ const client = new Discord.Client();
 // create a new discord collection of commands
 client.commands = new Discord.Collection();
 
+// rquire the welcome.js module
+const welcome = require('./welcome.js');
+
 // create variables according to the configuration file
 const {
     prefix,
@@ -37,6 +40,14 @@ client.once('ready', () => {
     console.log('Ready!');
 });
 
+// when a new member joins, run this code
+// this event welcomes new members
+client.on('guildMemberAdd', member => {
+
+    const channel = client.channels.find("name", "general");
+    welcome.execute(member,channel);
+});
+
 // when the client receives any message, run this code
 // this event will trigger after every message sent in the channel
 client.on('message', message => {
@@ -51,32 +62,33 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
 
     // try to find a command with the name or aliases supplied
-    command = client.commands.get(commandName)
-    || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+    command = client.commands.get(commandName) ||
+        client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
     // if the command name doesn't exist in our implement commands collection, do nothing
-    if(!command) return;
+    if (!command || command.notExposed) return;
+
+    message.channel.send(`Καλημέρα ${message.author}, η Ανατολή είμαι.`);
 
     // if the needed args are empty, reply a failure message
     if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments, ${message.author}!`;
-
+        let reply = `Δε μου έδωσες τις παραμέτρους που χρειάζομαι.`;
+        
         //include a proper usage explanation
         if (command.usage) {
-            reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+            reply += `\nΗ σωστή χρήση θα ήταν: \`${prefix}${command.name} ${command.usage}\``;
         }
         return message.channel.send(reply);
     }
 
-    try {
-
+    try { 
         // execute the command's exported execute method
         command.execute(message, args);
     } catch (error) {
-
         //log the error in console and sent a generic failure message to the channel
         console.error(error);
-        message.reply('There was an error trying to execute that command');
+        message.send('Υπήρχε κάποιο πρόβλημα με την εκτέλεση αυτής της εντολής.');
+        message.send(`Να βάλω αίτημα στην υποστήριξη?`);
     }
 });
 

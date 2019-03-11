@@ -1,6 +1,5 @@
-
 // recursive factorial calculation.
-function factorial(x) {  
+function factorial(x) {
     if (x === 0) {
         return 1;
     } else
@@ -9,8 +8,8 @@ function factorial(x) {
 
 module.exports = {
     name: 'factorial',
-    aliases: ['fctrl','fct'],
-    description: 'Calculates factorial',
+    aliases: ['fctrl', 'fct'],
+    description: 'Υπολογίζει παραγοντικό.',
     args: true,
     usage: '<number less than 20>',
     execute(message, args) {
@@ -19,11 +18,13 @@ module.exports = {
 
         // if input is either a non-number value or a number bigger than 20,
         // return a failure response.
-        if (isNaN(temp)|| temp>=20) {
-             message.channel.send(`That's not a valid number!`);
+        if (isNaN(temp) || temp >= 20) {
+            message.channel.send(`Αυτός δεν είναι σωστός αριθμός`);
+        } else {
+            message.channel.send(`Το αποτέλεσμα είναι ${factorial(temp)}`);
+            if (factorial(temp) >= 1000)
+                message.channel.send(`Κώστα μου μπορούμε να βάλουμε τελείες στα νούμερα γιατι μπερδεύομαι?`);
         }
-        else 
-        message.channel.send(`The result is ${factorial(temp)}`);
     }
 
 }
