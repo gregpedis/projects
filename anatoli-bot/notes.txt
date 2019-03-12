@@ -1,0 +1,11 @@
+message.channel.send
+message.channel.reply
+
+message.guild.name
+message.guild.membercount
+
+message.channel.name
+
+message.author.username
+message.mentions.users
+
