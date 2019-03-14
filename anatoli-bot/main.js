@@ -44,7 +44,7 @@ client.once('ready', () => {
 // this event welcomes new members
 client.on('guildMemberAdd', member => {
 
-    const channel = client.channels.find("name", "general");
+    const channel = client.channels.get('channelID');
     welcome.execute(member,channel);
 });
 
