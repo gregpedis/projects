@@ -1,4 +1,6 @@
-const { prefix } = require('../config.json');
+const {
+	prefix
+} = require('../config.json');
 
 module.exports = {
 	name: 'help',
@@ -8,14 +10,18 @@ module.exports = {
 	cooldown: 3,
 	execute(message, args) {
 		const data = [];
-		const { commands } = message.client;
+		const {
+			commands
+		} = message.client;
 
 		if (!args.length) {
 			data.push('Επισυνάπτω τη λίστα με τις εντολές μου:\n');
 			data.push(commands.map(command => command.name).join('\n'));
-			data.push(`\nΜπορείς να στείλεις \`${prefix}help [command name]\` για να σου επισυνάψω βοήθεια με κάποια εντολή!`);
+			data.push(`Μπορείς να στείλεις \`${prefix}help [command name]\` για να σου επισυνάψω βοήθεια με κάποια εντολή! \n`);
 
-			return message.channel.send(data, { split: true })
+			return message.channel.send(data, {
+					split: true
+				})
 				.catch(error => {
 					console.error(`Could not send help to ${message.channel.name}.\n`, error);
 					message.channel.send(`Για κάποιο λόγο δε μπόρεσα να στείλω τη λίστα με τις εντολές.`);
@@ -40,6 +46,8 @@ module.exports = {
 
 		data.push(`**Χρόνος μεταξύ χρήσεων:** ${command.cooldown || 3} δευτερόλεπτα`);
 
-		message.channel.send(data, { split: true });
+		message.channel.send(data, {
+			split: true
+		});
 	},
 };
