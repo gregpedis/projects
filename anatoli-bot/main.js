@@ -61,7 +61,7 @@ client.on('message', message => {
 
     // execute the request command's exported execute method 
     // every set amount of messages in any channel.
-    if (counter >= 50) {
+    if (counter >= 42) {
         client.commands.get("request").execute(message, []);
         counter = 0;
     }

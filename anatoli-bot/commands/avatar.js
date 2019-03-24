@@ -7,4 +7,4 @@ module.exports = {
         message.channel.send(`Επισυνάπτω το avatar του χρήστη ${message.author.username} παρακάτω. \n`);
         message.channel.send(message.client.user.avatarURL);
     }
-}
+};

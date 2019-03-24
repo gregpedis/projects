@@ -7,4 +7,4 @@ module.exports = {
     execute(message, args) {
         message.channel.send('Το νόημα της ζωής είναι 42.');
     },
-}
+};
