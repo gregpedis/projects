@@ -1,0 +1,3 @@
+server/env/
+server/.vscode/
+server/__pycache__/
