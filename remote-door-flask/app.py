@@ -12,14 +12,22 @@ app.config.from_object(__name__)
 # enable CORS CORS
 #(app, resources={r'/*': {'origins': '*'}})
 
+
+door_status='Closed'
+
 # sanity check route 
 @app.route('/', methods=['GET']) 
-def remote_door(door_status = None):
+def remote_door():
+    return render_template('door.html',door_status=door_status)   
+
+
+
+@app.route('/open',methods=['GET'])
+def open_door():
     if door_status =='Open':
         door_status='Closed'
     else:
         door_status='Open'
-    return render_template('index.html',door_status=door_status)   
 
 
 if __name__ == '__main__':     
