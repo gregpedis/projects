@@ -1,45 +1,28 @@
-<html>     
+{% extends "base.html" %}
 
-	<head>
+{% block content %}
 
-		<link rel="stylesheet" 
-     		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-     		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
-     		crossorigin="anonymous">
-
-    		<script src="https://kit.fontawesome.com/8e06e008dd.js"></script>
-
-		<link rel="stylesheet"
-		type="text/css"
-  		href="{{ url_for('static', filename= 'css/door.css')}}">
-
-		<title>Remote Door</title>   
-
-	</head>  
-       	
-       	<body> 
-		<div class ="entire-screen d-flex triple-gradient">	
+<div class ="entire-screen d-flex triple-gradient">	
 				
-			<div class="my-auto mx-auto" align="center">	
-			
-				<h1>
-					Door Status: <font color="green"> {{door_status}} </font>
-				</h1>     
+	<div class="my-auto mx-auto" align="center">	
 		
-				<a href="/door">
+		<h1>
+			Door Status: <font color="green"> {{door_status}} </font>
+		</h1>     
+	
+		<a href="/door">
 				
-					<button type="button" class="btn btn-primary btn-lg" style="font-size:50px;" >
+			<button type="button" class="btn btn-primary btn-lg" style="font-size:50px;">
 				      
-						<i class="fas fa-door-open" style="font-size:50px;"></i>
+				<i class="fas fa-door-open" style="font-size:50px;"></i>
 			
-					</button>
+			</button>
 		
-				</a>
+		</a>
 		
-			</div>   
-		
-		</div>
+	</div>   
+	
+</div>
 
-	</body> 
+{% endblock %}
 
-</html>

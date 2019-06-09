@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class ="entire-screen d-flex triple-gradient">	
+				
+	<div class="my-auto mx-auto">	
+		
+		<h2>
+			Roll: {{roll}} 
+		</h2>     
+		
+		<h2>
+			Effect: {{effect}} 
+		</h2>     
+
+		<br>
+
+		<a href="/">
+			
+			<button type="button" class="btn btn-primary btn-lg" style="font-size:50px;">
+				
+				<span>
+				
+					Roll again	<i class="fas fa-dice-d20"></i>
+				
+				</span>
+			
+			</button>
+		
+		</a>
+
+	</div>   
+	
+</div>
+
+{% endblock %}
+
