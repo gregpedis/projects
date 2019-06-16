@@ -10,6 +10,7 @@
 
 	{% for roll in rolls %}
 
+  <div class="p-1">
 	<div class="card">
 
 		<div class="card-body d-flex flex-column">
@@ -18,7 +19,7 @@
 
 			<p class="mt-auto card-text">
 
-				Rolls a dice with {{roll}} sides.
+				Rolls a d-{{roll}} dice.
 
 			</p>
 
@@ -36,6 +37,7 @@
 
 	</div>
 
+  </div>
 	{% endfor %}
 
 </div>
@@ -50,7 +52,7 @@
 
 			<p class="mt-auto card-text">
 
-				Rolls a dice with a pool of 10,000 possible effects.
+				Rolls a dice with a pool of 10,000 effects.
 
 			</p>
 
