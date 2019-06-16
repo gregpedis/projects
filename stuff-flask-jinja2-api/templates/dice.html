@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class ="entire-screen d-flex triple-gradient">	
+				
+  <div class="my-auto mx-auto">	 
+  
+    <h1>
+  
+      You rolled a {{roll}}!
+		
+    </h1>
+    
+    <br>
+
+      <a href="/roll/{{dice}}">
+			
+		  	<button type="button" class="btn btn-primary btn-lg" style="font-size:50px;">
+				
+			  	<span>
+				
+				  	Roll <i class="fas fa-dice"></i>
+				
+			  	</span>
+			
+		  	</button>
+		
+      </a>
+
+
+      <a href="/">
+			
+		  	<button type="button" class="btn btn-secondary btn-lg" style="font-size:50px;">
+				
+			  	<span>
+			 
+            Back <i class="fas fa-bars"></i>
+				
+			  	</span>
+			
+		  	</button>
+		
+      </a>
+
+   </div>   
+	
+</div>
+
+{% endblock %}
+
