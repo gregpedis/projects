@@ -1,25 +1,30 @@
-<html>     
+<html>
 
-	<head>
+<head>
 
-		<link rel="stylesheet" 
-     		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-     		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
-     		crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    		<script src="https://kit.fontawesome.com/8e06e008dd.js"></script>
+	<script src="https://kit.fontawesome.com/8e06e008dd.js"></script>
 
-		<link rel="stylesheet"
-		type="text/css"
-  		href="{{ url_for('static', filename='css/styles.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css')}}">
 
-		<title>Random Stuff</title>   
+	<title>Random Stuff</title>
 
-	</head>  
-       	
-       	<body> 
-		{% block content %} {% endblock %}
+</head>
 
-	</body> 
+<body>
+
+	<div class="entire-screen d-flex triple-gradient">
+
+		<div class="my-auto mx-auto">
+
+			{% block content %} {% endblock %}
+
+		</div>
+
+	</div>
+
+</body>
 
 </html>

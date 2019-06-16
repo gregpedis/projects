@@ -18,7 +18,8 @@ def base_route():
 #home route, containing the menu 
 @app.route('/home', methods=['GET'])
 def main_menu():
-    return render_template('home.html')   
+    rolls = [6,10,20,100]
+    return render_template('home.html',rolls = rolls)   
 
 #roll route, containing the dice roll
 @app.route('/roll/<dice>', methods=['GET']) 
