@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify 
-import createList
+import random_magic_effects
 import random
 
 # configuration 
@@ -8,7 +8,7 @@ DEBUG = True
 #instantiate the app 
 app = Flask(__name__) 
 app.config.from_object(__name__)  
-Rolls = createList.Effects()
+Rolls = random_magic_effects.Effects()
 
 #default route, redirecting to the home route
 @app.route('/',methods=['GET']) 
