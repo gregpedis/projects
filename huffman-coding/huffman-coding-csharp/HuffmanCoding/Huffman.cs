@@ -3,19 +3,19 @@ using System.Linq;
 
 namespace HuffmanCoding
 {
+    public class HuffmanNode
+    {
+        public string Symbol { get; set; }
+
+        public int Weight { get; set; }
+
+        public HuffmanNode Left { get; set; }
+
+        public HuffmanNode Right { get; set; }
+    }
+
     public static class Huffman
     {
-        public class HuffmanNode
-        {
-            public string Symbol { get; set; }
-
-            public int Weight { get; set; }
-
-            public HuffmanNode Left { get; set; }
-
-            public HuffmanNode Right { get; set; }
-        }
-
         public static Dictionary<string, int> CreateFrequencyTable(string input)
         {
             var frequencyTable = new Dictionary<string, int>();
@@ -35,9 +35,9 @@ namespace HuffmanCoding
             return frequencyTable;
         }
 
-        public static SortedList<int, HuffmanNode> CreateNodeList(string input, Dictionary<string, int> frequencyTable)
+        public static PriorityQueue<HuffmanNode> CreateNodeList(string input, Dictionary<string, int> frequencyTable)
         {
-            var nodeList = new SortedList<int, HuffmanNode>();
+            var nodeList = new PriorityQueue<HuffmanNode>();
 
             foreach (var kv in frequencyTable)
             {
@@ -47,20 +47,18 @@ namespace HuffmanCoding
                     Weight = kv.Value
                 };
 
-                nodeList.Add(kv.Value, huffmanNode);
+                nodeList.Enqueue(kv.Value, huffmanNode);
             }
 
             return nodeList;
         }
 
-        public static HuffmanNode CreateTreeStructure(SortedList<int, HuffmanNode> nodeList)
+        public static HuffmanNode CreateTreeStructure(PriorityQueue<HuffmanNode> nodeList)
         {
             while (nodeList.Count() > 1)
             {
-                var nodeLeft = nodeList.Take(1).First().Value;
-                nodeList.RemoveAt(0);
-                var nodeRight = nodeList.Take(1).First().Value;
-                nodeList.RemoveAt(0);
+                var nodeLeft = nodeList.Dequeue();
+                var nodeRight = nodeList.Dequeue();
 
                 var internalNode = new HuffmanNode()
                 {
@@ -70,10 +68,12 @@ namespace HuffmanCoding
                     Weight = nodeLeft.Weight + nodeRight.Weight,
                 };
 
-                nodeList.Add(nodeLeft.Weight + nodeRight.Weight, internalNode);
+                nodeList.Enqueue(nodeLeft.Weight + nodeRight.Weight, internalNode);
             }
 
-            return nodeList[0];
+            return nodeList.Dequeue();
         }
+
+
     }
 }

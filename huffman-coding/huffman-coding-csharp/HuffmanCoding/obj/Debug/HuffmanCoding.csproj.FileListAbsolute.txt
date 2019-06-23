@@ -11,3 +11,10 @@ D:\Development\projects\HuffmanCoding\C#-Implementation\HuffmanCoding\bin\Debug\
 D:\Development\projects\HuffmanCoding\C#-Implementation\HuffmanCoding\obj\Debug\HuffmanCoding.csproj.CoreCompileInputs.cache
 D:\Development\projects\HuffmanCoding\C#-Implementation\HuffmanCoding\obj\Debug\HuffmanCoding.exe
 D:\Development\projects\HuffmanCoding\C#-Implementation\HuffmanCoding\obj\Debug\HuffmanCoding.pdb
+D:\Development\projects\huffman-coding\huffman-coding-csharp\HuffmanCoding\bin\Debug\HuffmanCoding.exe.config
+D:\Development\projects\huffman-coding\huffman-coding-csharp\HuffmanCoding\bin\Debug\HuffmanCoding.exe
+D:\Development\projects\huffman-coding\huffman-coding-csharp\HuffmanCoding\bin\Debug\HuffmanCoding.pdb
+D:\Development\projects\huffman-coding\huffman-coding-csharp\HuffmanCoding\obj\Debug\HuffmanCoding.csprojAssemblyReference.cache
+D:\Development\projects\huffman-coding\huffman-coding-csharp\HuffmanCoding\obj\Debug\HuffmanCoding.csproj.CoreCompileInputs.cache
+D:\Development\projects\huffman-coding\huffman-coding-csharp\HuffmanCoding\obj\Debug\HuffmanCoding.exe
+D:\Development\projects\huffman-coding\huffman-coding-csharp\HuffmanCoding\obj\Debug\HuffmanCoding.pdb

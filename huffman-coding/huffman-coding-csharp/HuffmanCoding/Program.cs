@@ -15,8 +15,6 @@ namespace HuffmanCoding
             var nodeList = Huffman.CreateNodeList(input, frequencyTable);
             var nodeTree = Huffman.CreateTreeStructure(nodeList);
 
-
-
         }
     }
 }
