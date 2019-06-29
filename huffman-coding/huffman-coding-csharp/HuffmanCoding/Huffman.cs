@@ -74,6 +74,19 @@ namespace HuffmanCoding
             return nodeList.Dequeue();
         }
 
+        public static void CreateEncodingTable(Dictionary<string, string> encodingTable, HuffmanNode nodeTree, string encodingValue)
+        {
+            if (nodeTree.Left == null)
+            {
+                encodingTable.Add(nodeTree.Symbol, encodingValue);
+                return;
+            }
 
+            var encodingValueLeft = encodingValue + '0';
+            CreateEncodingTable(encodingTable, nodeTree.Left, encodingValueLeft);
+
+            var encodingValueRight = encodingValue + '1';
+            CreateEncodingTable(encodingTable, nodeTree.Right, encodingValueRight);
+        }
     }
 }
