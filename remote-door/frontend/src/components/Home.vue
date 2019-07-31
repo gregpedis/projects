@@ -14,6 +14,9 @@
             <p class="title">{{ survey.name}}</p>
             <p class="subtitle">{{ survey.created_at.toDateString() }}</p>
           </div>
+          <div class="card-footer">
+            <router-link v-bind:to="`surveys/${survey.id}`" class="card-footer-item">Take Survey</router-link>
+          </div>
         </div>
       </div>
     </section>
