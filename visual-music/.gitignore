@@ -1,0 +1,14 @@
+#Excluded folders #
+###########################
+env/
+.vscode/
+__pycache__/
+etc
+Include
+Lib
+Scripts
+share
+
+# Will match .pyc, .pyo and .pyd files. #
+#########################################
+*.py[cod]     		
