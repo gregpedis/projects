@@ -1,0 +1,2784 @@
+<!DOCTYPE doctype html>
+<html lang="en">
+ <head>
+  <link href="//files.realpython.com" rel="dns-prefetch"/>
+  <link href="//fonts.googleapis.com" rel="dns-prefetch"/>
+  <link href="//fonts.gstatic.com" rel="dns-prefetch"/>
+  <title>
+   Python’s Requests Library (Guide) – Real Python
+  </title>
+  <meta content="Real Python" name="author"/>
+  <meta content="In this tutorial on Python's &quot;requests&quot; library, you'll see some of the most useful features that requests has to offer as well as how to customize and optimize those features. You'll learn how to use requests efficiently and stop requests to external services from slowing down your application." name="description"/>
+  <meta content="requests" name="keywords"/>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+  <link href="https://realpython.com/python-requests/" rel="canonical"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="https://files.realpython.com/media/Python-Requests-Library-Tutorial_Watermarked.3c9dfdc7b014.jpg" name="twitter:image"/>
+  <meta content="https://files.realpython.com/media/Python-Requests-Library-Tutorial_Watermarked.3c9dfdc7b014.jpg" property="og:image"/>
+  <meta content="@realpython" name="twitter:creator"/>
+  <meta content="@realpython" name="twitter:site"/>
+  <meta content="Python’s Requests Library (Guide) – Real Python" property="og:title"/>
+  <meta content="article" property="og:type"/>
+  <meta content="https://realpython.com/python-requests/" property="og:url"/>
+  <meta content="In this tutorial on Python's &quot;requests&quot; library, you'll see some of the most useful features that requests has to offer as well as how to customize and optimize those features. You'll learn how to use requests efficiently and stop requests to external services from slowing down your application." property="og:description"/>
+  <link href="/static/favicon.68cbf4197b0c.png" rel="icon"/>
+  <link href="https://realpython.com/atom.xml" rel="alternate" title="Real Python" type="application/atom+xml"/>
+  <link href="/manifest.json" rel="manifest"/>
+  <link href="/static/realpython.min.de1d1b3623a1.css" rel="stylesheet"/>
+  <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-35184939-1', 'auto', {'allowLinker': true});
+  ga('require', 'linker');
+  ga('linker:autoLink', ['fastspring.com', 'realpython.onfastspring.com', 'onfastspring.com']);
+  ga('send', 'pageview');
+  
+  ga('require', 'ecommerce');
+  </script>
+ </head>
+ <body>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark flex-column">
+   <div class="container flex-row">
+    <a class="navbar-brand" href="/">
+     <img alt="Real Python" class="d-inline-block align-top" height="40" src="/static/real-python-logo.ab1a167d9717.svg"/>
+    </a>
+    <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+     <span class="navbar-toggler-icon">
+     </span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <ul class="navbar-nav mr-2 flex-fill">
+      <li class="nav-item">
+       <a class="nav-link" href="/start-here/">
+        Start Here
+       </a>
+      </li>
+      <li class="nav-item dropdown">
+       <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownLibrary" role="button">
+        <span class="fa fa-graduation-cap">
+        </span>
+        Learn Python
+       </a>
+       <div aria-labelledby="navbarDropdownLibrary" class="dropdown-menu">
+        <a class="dropdown-item" href="/">
+         Python Tutorials
+        </a>
+        <a class="dropdown-item" href="/courses/">
+         Video Courses
+        </a>
+        <a class="dropdown-item" href="/quizzes/">
+         Interactive Quizzes
+        </a>
+        <a class="dropdown-item" href="/learning-paths/">
+         Learning Paths
+        </a>
+        <a class="dropdown-item" href="/tutorials/all/">
+         Browse Topics
+        </a>
+        <a class="dropdown-item border-top" href="/account/join/">
+         <i class="fa fa-fw fa-star text-warning">
+         </i>
+         Unlock All Content
+        </a>
+       </div>
+      </li>
+      <li class="nav-item dropdown">
+       <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownBooksCourses" role="button">
+        Store
+       </a>
+       <div aria-labelledby="navbarDropdownBooksCourses" class="dropdown-menu">
+        <a class="dropdown-item" href="/account/join/">
+         <i class="fa fa-fw fa-star text-warning">
+         </i>
+         RP Membership
+        </a>
+        <a class="dropdown-item" href="/products/python-basics-book/">
+         Python Basics Book
+        </a>
+        <a class="dropdown-item" href="/products/python-tricks-book/">
+         Python Tricks Book
+        </a>
+        <a class="dropdown-item" href="/products/real-python-course/">
+         The Real Python Course
+        </a>
+        <a class="dropdown-item" href="/products/managing-python-dependencies/">
+         Managing Python Dependencies
+        </a>
+        <a class="dropdown-item" href="/products/sublime-python/">
+         Sublime Text + Python Setup
+        </a>
+        <a class="dropdown-item" href="/products/pythonic-wallpapers/">
+         Pythonic Wallpapers Pack
+        </a>
+        <a class="dropdown-item" href="https://nerdlettering.com" target="_blank">
+         Python Mugs, T-Shirts, and More
+        </a>
+        <a class="dropdown-item" href="https://www.pythonistacafe.com" target="_blank">
+         Pythonista Cafe Community
+        </a>
+        <a class="dropdown-item border-top" href="/products/">
+         Browse All »
+        </a>
+       </div>
+      </li>
+      <li class="nav-item dropdown">
+       <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdownMore" role="button">
+        More
+       </a>
+       <div aria-labelledby="navbarDropdownMore" class="dropdown-menu">
+        <a class="dropdown-item" href="/newsletter/">
+         Python Newsletter
+        </a>
+        <a class="dropdown-item" href="https://www.pythonjobshq.com" target="_blank">
+         Python Job Board
+        </a>
+        <a class="dropdown-item" href="/team/">
+         The RP Team
+        </a>
+        <a class="dropdown-item" href="/write-for-us/">
+         Become a Tutorial Author
+        </a>
+        <a class="dropdown-item" href="/become-an-instructor/">
+         Become a Video Instructor
+        </a>
+       </div>
+      </li>
+     </ul>
+     <form action="/search" class="form-inline my-2 my-lg-0 mr-2 flex-fill" method="GET">
+      <input aria-label="Search" class="search-field form-control form-control-md mr-sm-1 mr-lg-2 w-100" name="q" placeholder="Search…" type="search"/>
+     </form>
+     <ul class="navbar-nav">
+      <li class="nav-item form-inline">
+       <a class="btn btn-sm btn-primary px-3" href="/account/join/">
+        Join
+       </a>
+      </li>
+      <li class="nav-item">
+       <a class="btn text-light" href="/account/login/">
+        Sign In
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+  </nav>
+  <div class="container main-content">
+   <div class="row justify-content-center">
+    <div class="col-md-11 col-lg-8 article">
+     <figure class="embed-responsive embed-responsive-16by9">
+      <img alt="Python’s Requests Library (Guide)" class="card-img-top m-0 p-0 embed-responsive-item rounded" height="1080" sizes="75vw" src="https://files.realpython.com/media/Python-Requests-Library-Tutorial_Watermarked.3c9dfdc7b014.jpg" srcset="https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/Python-Requests-Library-Tutorial_Watermarked.3c9dfdc7b014.jpg&amp;w=480&amp;sig=ad79273fb03d57f8becaa504f8431616bb876d0b 480w, https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/Python-Requests-Library-Tutorial_Watermarked.3c9dfdc7b014.jpg&amp;w=960&amp;sig=b3f85ff53221de55d15afa943922e03ce853a9c7 960w, https://files.realpython.com/media/Python-Requests-Library-Tutorial_Watermarked.3c9dfdc7b014.jpg 1920w" style="object-fit: contain;" width="1920"/>
+     </figure>
+     <h1>
+      Python’s Requests Library (Guide)
+     </h1>
+     <p>
+      <span class="text-muted">
+       by
+       <a class="text-muted" href="#author">
+        Alex Ronquillo
+       </a>
+       <span class="ml-2 fa fa-clock-o">
+       </span>
+       Jan 23, 2019
+       <span class="ml-2 mr-1 fa fa-comments">
+       </span>
+       <a class="text-muted" href="#reader-comments">
+        <span class="disqus-comment-count" data-disqus-identifier="https://realpython.com/python-requests/">
+        </span>
+       </a>
+       <span class="ml-2 fa fa-tags">
+       </span>
+       <a class="badge badge-light text-muted" href="/tutorials/intermediate/">
+        intermediate
+       </a>
+       <a class="badge badge-light text-muted" href="/tutorials/web-dev/">
+        web-dev
+       </a>
+       <br/>
+       <a class="mr-1 badge badge-twitter text-light" href="https://twitter.com/intent/tweet/?text=Check out this %23Python tutorial: Python%E2%80%99s%20Requests%20Library%20%28Guide%29 by @realpython&amp;url=https%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-twitter text-light">
+        </i>
+        Tweet
+       </a>
+       <a class="mr-1 badge badge-facebook text-light" href="https://facebook.com/sharer/sharer.php?u=https%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-facebook text-light">
+        </i>
+        Share
+       </a>
+       <a class="mr-1 badge badge-red text-light" href="mailto:?subject=Python article for you&amp;body=Check out this Python tutorial:%0A%0APython%E2%80%99s%20Requests%20Library%20%28Guide%29%0A%0Ahttps%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-envelope text-light">
+        </i>
+        Email
+       </a>
+      </span>
+     </p>
+     <div class="article-body">
+      <div class="bg-light sidebar-module sidebar-module-inset" id="toc">
+       <p class="h3 mb-2 text-muted">
+        Table of Contents
+       </p>
+       <div class="toc">
+        <ul>
+         <li>
+          <a href="#getting-started-with-requests">
+           Getting Started With requests
+          </a>
+         </li>
+         <li>
+          <a href="#the-get-request">
+           The GET Request
+          </a>
+         </li>
+         <li>
+          <a href="#the-response">
+           The Response
+          </a>
+          <ul>
+           <li>
+            <a href="#status-codes">
+             Status Codes
+            </a>
+           </li>
+           <li>
+            <a href="#content">
+             Content
+            </a>
+           </li>
+           <li>
+            <a href="#headers">
+             Headers
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li>
+          <a href="#query-string-parameters">
+           Query String Parameters
+          </a>
+         </li>
+         <li>
+          <a href="#request-headers">
+           Request Headers
+          </a>
+         </li>
+         <li>
+          <a href="#other-http-methods">
+           Other HTTP Methods
+          </a>
+         </li>
+         <li>
+          <a href="#the-message-body">
+           The Message Body
+          </a>
+         </li>
+         <li>
+          <a href="#inspecting-your-request">
+           Inspecting Your Request
+          </a>
+         </li>
+         <li>
+          <a href="#authentication">
+           Authentication
+          </a>
+         </li>
+         <li>
+          <a href="#ssl-certificate-verification">
+           SSL Certificate Verification
+          </a>
+         </li>
+         <li>
+          <a href="#performance">
+           Performance
+          </a>
+          <ul>
+           <li>
+            <a href="#timeouts">
+             Timeouts
+            </a>
+           </li>
+           <li>
+            <a href="#the-session-object">
+             The Session Object
+            </a>
+           </li>
+           <li>
+            <a href="#max-retries">
+             Max Retries
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li>
+          <a href="#conclusion">
+           Conclusion
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+      <div class="sidebar-module sidebar-module-inset p-0" style="overflow:hidden;">
+       <div style="display:block;position:relative;">
+        <div style="display:block;width:100%;padding-top:12.5%;">
+        </div>
+        <div class="rpad" data-unit="8x1" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;">
+        </div>
+       </div>
+      </div>
+      <div class="border rounded p-3 card mb-2">
+       <p class="mb-0">
+        <span class="badge badge-pill badge-success">
+         <i aria-hidden="true" class="fa fa-play-circle">
+         </i>
+         Watch Now
+        </span>
+        This tutorial has a related video course created by the Real Python team. Watch it together with the written tutorial to deepen your understanding:
+        <a class="stretched-link text-success" href="/courses/python-requests/">
+         <strong>
+          Making HTTP Requests With Python
+         </strong>
+        </a>
+       </p>
+      </div>
+      <p>
+       The
+       <a href="http://docs.python-requests.org/en/master/">
+        <code>
+         requests
+        </code>
+       </a>
+       library is the de facto standard for making HTTP requests in Python. It abstracts the complexities of making requests behind a beautiful, simple API so that you can focus on interacting with services and consuming data in your application.
+      </p>
+      <p>
+       Throughout this article, you’ll see some of the most useful features that
+       <code>
+        requests
+       </code>
+       has to offer as well as how to customize and optimize those features for different situations you may come across. You’ll also learn how to use
+       <code>
+        requests
+       </code>
+       in an efficient way as well as how to prevent requests to external services from slowing down your application.
+      </p>
+      <p>
+       <strong>
+        In this tutorial, you’ll learn how to:
+       </strong>
+      </p>
+      <ul>
+       <li>
+        <strong>
+         Make requests
+        </strong>
+        using the most common HTTP methods
+       </li>
+       <li>
+        <strong>
+         Customize
+        </strong>
+        your requests’ headers and data, using the query string and message body
+       </li>
+       <li>
+        <strong>
+         Inspect
+        </strong>
+        data from your requests and responses
+       </li>
+       <li>
+        Make
+        <strong>
+         authenticated
+        </strong>
+        requests
+       </li>
+       <li>
+        <strong>
+         Configure
+        </strong>
+        your requests to help prevent your application from backing up or slowing down
+       </li>
+      </ul>
+      <p>
+       Though I’ve tried to include as much information as you need to understand the features and examples included in this article, I do assume a
+       <em>
+        very
+       </em>
+       <a href="https://www.w3schools.com/tags/ref_httpmethods.asp">
+        basic general knowledge of HTTP
+       </a>
+       . That said, you still may be able to follow along fine anyway.
+      </p>
+      <p>
+       Now that that is out of the way, let’s dive in and see how you can use
+       <code>
+        requests
+       </code>
+       in your application!
+      </p>
+      <div class="w-100 text-center js-needs-scaling" style="transform-origin: 0 0;">
+       <div id="waldo-tag-4996">
+       </div>
+       <a class="small text-muted js-disclosure" href="/account/join/" rel="nofollow" style="display: none;">
+        <i aria-hidden="true" class="fa fa-info-circle">
+        </i>
+        Remove ads
+       </a>
+      </div>
+      <h2 id="getting-started-with-requests">
+       Getting Started With
+       <code>
+        requests
+       </code>
+      </h2>
+      <p>
+       Let’s begin by installing the
+       <code>
+        requests
+       </code>
+       library. To do so, run the following command:
+      </p>
+      <div class="highlight sh">
+       <pre><span></span><span class="gp">$</span> pip install requests
+</pre>
+      </div>
+      <p>
+       If you prefer to use
+       <a href="https://realpython.com/pipenv-guide/">
+        Pipenv
+       </a>
+       for managing Python packages, you can run the following:
+      </p>
+      <div class="highlight sh">
+       <pre><span></span><span class="gp">$</span> pipenv install requests
+</pre>
+      </div>
+      <p>
+       Once
+       <code>
+        requests
+       </code>
+       is installed, you can use it in your application. Importing
+       <code>
+        requests
+       </code>
+       looks like this:
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+</pre>
+      </div>
+      <p>
+       Now that you’re all set up, it’s time to begin your journey through
+       <code>
+        requests
+       </code>
+       . Your first goal will be learning how to make a
+       <code>
+        GET
+       </code>
+       request.
+      </p>
+      <h2 id="the-get-request">
+       The GET Request
+      </h2>
+      <p>
+       <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods">
+        HTTP methods
+       </a>
+       such as
+       <code>
+        GET
+       </code>
+       and
+       <code>
+        POST
+       </code>
+       , determine which action you’re trying to perform when making an HTTP request. Besides
+       <code>
+        GET
+       </code>
+       and
+       <code>
+        POST
+       </code>
+       , there are several other common methods that you’ll use later in this tutorial.
+      </p>
+      <p>
+       One of the most common HTTP methods is
+       <code>
+        GET
+       </code>
+       . The
+       <code>
+        GET
+       </code>
+       method indicates that you’re trying to get or retrieve data from a specified resource. To make a
+       <code>
+        GET
+       </code>
+       request, invoke
+       <code>
+        requests.get()
+       </code>
+       .
+      </p>
+      <p>
+       To test this out, you can make a
+       <code>
+        GET
+       </code>
+       request to GitHub’s
+       <a href="https://developer.github.com/v3/#root-endpoint">
+        Root REST API
+       </a>
+       by calling
+       <code>
+        get()
+       </code>
+       with the following URL:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">)</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       Congratulations! You’ve made your first request. Let’s dive a little deeper into the response of that request.
+      </p>
+      <h2 id="the-response">
+       The Response
+      </h2>
+      <p>
+       A
+       <code>
+        Response
+       </code>
+       is a powerful object for inspecting the results of the request. Let’s make that same request again, but this time store the return value in a variable so that you can get a closer look at its attributes and behaviors:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">)</span>
+</pre>
+      </div>
+      <p>
+       In this example, you’ve captured the return value of
+       <code>
+        get()
+       </code>
+       , which is an instance of
+       <code>
+        Response
+       </code>
+       , and stored it in a variable called
+       <code>
+        response
+       </code>
+       . You can now use
+       <code>
+        response
+       </code>
+       to see a lot of information about the results of your
+       <code>
+        GET
+       </code>
+       request.
+      </p>
+      <h3 id="status-codes">
+       Status Codes
+      </h3>
+      <p>
+       The first bit of information that you can gather from
+       <code>
+        Response
+       </code>
+       is the status code. A status code informs you of the status of the request.
+      </p>
+      <p>
+       For example, a
+       <code>
+        200 OK
+       </code>
+       status means that your request was successful, whereas a
+       <code>
+        404 NOT FOUND
+       </code>
+       status means that the resource you were looking for was not found. There are
+       <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">
+        many other possible status codes
+       </a>
+       as well to give you specific insights into what happened with your request.
+      </p>
+      <p>
+       By accessing
+       <code>
+        .status_code
+       </code>
+       , you can see the status code that the server returned:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="go">200</span>
+</pre>
+      </div>
+      <p>
+       <code>
+        .status_code
+       </code>
+       returned a
+       <code>
+        200
+       </code>
+       , which means your request was successful and the server responded with the data you were requesting.
+      </p>
+      <p>
+       Sometimes, you might want to use this information to make decisions in your code:
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Success!'</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Not Found.'</span><span class="p">)</span>
+</pre>
+      </div>
+      <p>
+       With this logic, if the server returns a
+       <code>
+        200
+       </code>
+       status code, your program will print
+       <code>
+        Success!
+       </code>
+       . If the result is a
+       <code>
+        404
+       </code>
+       , your program will print
+       <code>
+        Not Found
+       </code>
+       .
+      </p>
+      <p>
+       <code>
+        requests
+       </code>
+       goes one step further in simplifying this process for you. If you use a
+       <code>
+        Response
+       </code>
+       instance in a conditional expression, it will evaluate to
+       <code>
+        True
+       </code>
+       if the status code was between
+       <code>
+        200
+       </code>
+       and
+       <code>
+        400
+       </code>
+       , and
+       <code>
+        False
+       </code>
+       otherwise.
+      </p>
+      <p>
+       Therefore, you can simplify the last example by rewriting the
+       <code>
+        if
+       </code>
+       statement:
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="k">if</span> <span class="n">response</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Success!'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'An error has occurred.'</span><span class="p">)</span>
+</pre>
+      </div>
+      <div class="alert alert-primary" role="alert">
+       <p>
+        <strong>
+         Technical Detail:
+        </strong>
+        This
+        <a href="https://docs.python.org/3/library/stdtypes.html#truth-value-testing">
+         Truth Value Test
+        </a>
+        is made possible because
+        <a href="https://realpython.com/operator-function-overloading/#making-your-objects-truthy-or-falsey-using-bool">
+         <code>
+          __bool__()
+         </code>
+         is an overloaded method
+        </a>
+        on
+        <code>
+         Response
+        </code>
+        .
+       </p>
+       <p>
+        This means that the default behavior of
+        <code>
+         Response
+        </code>
+        has been redefined to take the status code into account when determining the truth value of the object.
+       </p>
+      </div>
+      <p>
+       Keep in mind that this method is
+       <em>
+        not
+       </em>
+       verifying that the status code is equal to
+       <code>
+        200
+       </code>
+       . The reason for this is that other status codes within the
+       <code>
+        200
+       </code>
+       to
+       <code>
+        400
+       </code>
+       range, such as
+       <code>
+        204 NO CONTENT
+       </code>
+       and
+       <code>
+        304 NOT MODIFIED
+       </code>
+       , are also considered successful in the sense that they provide some workable response.
+      </p>
+      <p>
+       For example, the
+       <code>
+        204
+       </code>
+       tells you that the response was successful, but there’s no content to return in the message body.
+      </p>
+      <p>
+       So, make sure you use this convenient shorthand only if you want to know if the request was generally successful and then, if necessary, handle the response appropriately based on the status code.
+      </p>
+      <p>
+       Let’s say you don’t want to check the response’s status code in an
+       <code>
+        if
+       </code>
+       statement. Instead, you want to raise an exception if the request was unsuccessful. You can do this using
+       <code>
+        .raise_for_status()
+       </code>
+       :
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="k">import</span> <span class="n">HTTPError</span>
+
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'https://api.github.com'</span><span class="p">,</span> <span class="s1">'https://api.github.com/invalid'</span><span class="p">]:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="c1"># If the response was successful, no Exception will be raised</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">HTTPError</span> <span class="k">as</span> <span class="n">http_err</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'HTTP error occurred: </span><span class="si">{http_err}</span><span class="s1">'</span><span class="p">)</span>  <span class="c1"># Python 3.6</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'Other error occurred: </span><span class="si">{err}</span><span class="s1">'</span><span class="p">)</span>  <span class="c1"># Python 3.6</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Success!'</span><span class="p">)</span>
+</pre>
+      </div>
+      <p>
+       If you invoke
+       <code>
+        .raise_for_status()
+       </code>
+       , an
+       <code>
+        HTTPError
+       </code>
+       will be raised for certain status codes. If the status code indicates a successful request, the program will proceed without that exception being raised.
+      </p>
+      <div class="alert alert-primary" role="alert">
+       <p>
+        <strong>
+         Further Reading:
+        </strong>
+        If you’re not familiar with Python 3.6’s
+        <a href="https://realpython.com/python-f-strings/">
+         f-strings
+        </a>
+        , I encourage you to take advantage of them as they are a great way to simplify your formatted strings.
+       </p>
+      </div>
+      <p>
+       Now, you know a lot about how to deal with the status code of the response you got back from the server. However, when you make a
+       <code>
+        GET
+       </code>
+       request, you rarely only care about the status code of the response. Usually, you want to see more. Next, you’ll see how to view the actual data that the server sent back in the body of the response.
+      </p>
+      <div class="w-100 text-center js-needs-scaling" style="transform-origin: 0 0;">
+       <div id="waldo-tag-4998">
+       </div>
+       <a class="small text-muted js-disclosure" href="/account/join/" rel="nofollow" style="display: none;">
+        <i aria-hidden="true" class="fa fa-info-circle">
+        </i>
+        Remove ads
+       </a>
+      </div>
+      <h3 id="content">
+       Content
+      </h3>
+      <p>
+       The response of a
+       <code>
+        GET
+       </code>
+       request often has some valuable information, known as a payload, in the message body. Using the attributes and methods of
+       <code>
+        Response
+       </code>
+       , you can view the payload in a variety of different formats.
+      </p>
+      <p>
+       To see the response’s content in
+       <a href="https://realpython.com/python-strings/">
+        <code>
+         bytes
+        </code>
+       </a>
+       , you use
+       <code>
+        .content
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">content</span>
+<span class="go">b'{"current_user_url":"https://api.github.com/user","current_user_authorizations_html_url":"https://github.com/settings/connections/applications{/client_id}","authorizations_url":"https://api.github.com/authorizations","code_search_url":"https://api.github.com/search/code?q={query}{&amp;page,per_page,sort,order}","commit_search_url":"https://api.github.com/search/commits?q={query}{&amp;page,per_page,sort,order}","emails_url":"https://api.github.com/user/emails","emojis_url":"https://api.github.com/emojis","events_url":"https://api.github.com/events","feeds_url":"https://api.github.com/feeds","followers_url":"https://api.github.com/user/followers","following_url":"https://api.github.com/user/following{/target}","gists_url":"https://api.github.com/gists{/gist_id}","hub_url":"https://api.github.com/hub","issue_search_url":"https://api.github.com/search/issues?q={query}{&amp;page,per_page,sort,order}","issues_url":"https://api.github.com/issues","keys_url":"https://api.github.com/user/keys","notifications_url":"https://api.github.com/notifications","organization_repositories_url":"https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}","organization_url":"https://api.github.com/orgs/{org}","public_gists_url":"https://api.github.com/gists/public","rate_limit_url":"https://api.github.com/rate_limit","repository_url":"https://api.github.com/repos/{owner}/{repo}","repository_search_url":"https://api.github.com/search/repositories?q={query}{&amp;page,per_page,sort,order}","current_user_repositories_url":"https://api.github.com/user/repos{?type,page,per_page,sort}","starred_url":"https://api.github.com/user/starred{/owner}{/repo}","starred_gists_url":"https://api.github.com/gists/starred","team_url":"https://api.github.com/teams","user_url":"https://api.github.com/users/{user}","user_organizations_url":"https://api.github.com/user/orgs","user_repositories_url":"https://api.github.com/users/{user}/repos{?type,page,per_page,sort}","user_search_url":"https://api.github.com/search/users?q={query}{&amp;page,per_page,sort,order}"}'</span>
+</pre>
+      </div>
+      <p>
+       While
+       <code>
+        .content
+       </code>
+       gives you access to the raw bytes of the response payload, you will often want to convert them into a
+       <a href="https://realpython.com/python-data-types/">
+        string
+       </a>
+       using a character encoding such as
+       <a href="https://en.wikipedia.org/wiki/UTF-8">
+        UTF-8
+       </a>
+       .
+       <code>
+        response
+       </code>
+       will do that for you when you access
+       <code>
+        .text
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">text</span>
+<span class="go">'{"current_user_url":"https://api.github.com/user","current_user_authorizations_html_url":"https://github.com/settings/connections/applications{/client_id}","authorizations_url":"https://api.github.com/authorizations","code_search_url":"https://api.github.com/search/code?q={query}{&amp;page,per_page,sort,order}","commit_search_url":"https://api.github.com/search/commits?q={query}{&amp;page,per_page,sort,order}","emails_url":"https://api.github.com/user/emails","emojis_url":"https://api.github.com/emojis","events_url":"https://api.github.com/events","feeds_url":"https://api.github.com/feeds","followers_url":"https://api.github.com/user/followers","following_url":"https://api.github.com/user/following{/target}","gists_url":"https://api.github.com/gists{/gist_id}","hub_url":"https://api.github.com/hub","issue_search_url":"https://api.github.com/search/issues?q={query}{&amp;page,per_page,sort,order}","issues_url":"https://api.github.com/issues","keys_url":"https://api.github.com/user/keys","notifications_url":"https://api.github.com/notifications","organization_repositories_url":"https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}","organization_url":"https://api.github.com/orgs/{org}","public_gists_url":"https://api.github.com/gists/public","rate_limit_url":"https://api.github.com/rate_limit","repository_url":"https://api.github.com/repos/{owner}/{repo}","repository_search_url":"https://api.github.com/search/repositories?q={query}{&amp;page,per_page,sort,order}","current_user_repositories_url":"https://api.github.com/user/repos{?type,page,per_page,sort}","starred_url":"https://api.github.com/user/starred{/owner}{/repo}","starred_gists_url":"https://api.github.com/gists/starred","team_url":"https://api.github.com/teams","user_url":"https://api.github.com/users/{user}","user_organizations_url":"https://api.github.com/user/orgs","user_repositories_url":"https://api.github.com/users/{user}/repos{?type,page,per_page,sort}","user_search_url":"https://api.github.com/search/users?q={query}{&amp;page,per_page,sort,order}"}'</span>
+</pre>
+      </div>
+      <p>
+       Because the decoding of
+       <code>
+        bytes
+       </code>
+       to a
+       <code>
+        str
+       </code>
+       requires an encoding scheme,
+       <code>
+        requests
+       </code>
+       will try to guess the
+       <a href="https://docs.python.org/3/howto/unicode.html#encodings">
+        encoding
+       </a>
+       based on the response’s
+       <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">
+        headers
+       </a>
+       if you do not specify one. You can provide an explicit encoding by setting
+       <code>
+        .encoding
+       </code>
+       before accessing
+       <code>
+        .text
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">'utf-8'</span> <span class="c1"># Optional: requests infers this internally</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">text</span>
+<span class="go">'{"current_user_url":"https://api.github.com/user","current_user_authorizations_html_url":"https://github.com/settings/connections/applications{/client_id}","authorizations_url":"https://api.github.com/authorizations","code_search_url":"https://api.github.com/search/code?q={query}{&amp;page,per_page,sort,order}","commit_search_url":"https://api.github.com/search/commits?q={query}{&amp;page,per_page,sort,order}","emails_url":"https://api.github.com/user/emails","emojis_url":"https://api.github.com/emojis","events_url":"https://api.github.com/events","feeds_url":"https://api.github.com/feeds","followers_url":"https://api.github.com/user/followers","following_url":"https://api.github.com/user/following{/target}","gists_url":"https://api.github.com/gists{/gist_id}","hub_url":"https://api.github.com/hub","issue_search_url":"https://api.github.com/search/issues?q={query}{&amp;page,per_page,sort,order}","issues_url":"https://api.github.com/issues","keys_url":"https://api.github.com/user/keys","notifications_url":"https://api.github.com/notifications","organization_repositories_url":"https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}","organization_url":"https://api.github.com/orgs/{org}","public_gists_url":"https://api.github.com/gists/public","rate_limit_url":"https://api.github.com/rate_limit","repository_url":"https://api.github.com/repos/{owner}/{repo}","repository_search_url":"https://api.github.com/search/repositories?q={query}{&amp;page,per_page,sort,order}","current_user_repositories_url":"https://api.github.com/user/repos{?type,page,per_page,sort}","starred_url":"https://api.github.com/user/starred{/owner}{/repo}","starred_gists_url":"https://api.github.com/gists/starred","team_url":"https://api.github.com/teams","user_url":"https://api.github.com/users/{user}","user_organizations_url":"https://api.github.com/user/orgs","user_repositories_url":"https://api.github.com/users/{user}/repos{?type,page,per_page,sort}","user_search_url":"https://api.github.com/search/users?q={query}{&amp;page,per_page,sort,order}"}'</span>
+</pre>
+      </div>
+      <p>
+       If you take a look at the response, you’ll see that it is actually serialized JSON content. To get a dictionary, you could take the
+       <code>
+        str
+       </code>
+       you retrieved from
+       <code>
+        .text
+       </code>
+       and deserialize it using
+       <a href="https://realpython.com/python-json/#deserializing-json">
+        <code>
+         json.loads()
+        </code>
+       </a>
+       . However, a simpler way to accomplish this task is to use
+       <code>
+        .json()
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="go">{'current_user_url': 'https://api.github.com/user', 'current_user_authorizations_html_url': 'https://github.com/settings/connections/applications{/client_id}', 'authorizations_url': 'https://api.github.com/authorizations', 'code_search_url': 'https://api.github.com/search/code?q={query}{&amp;page,per_page,sort,order}', 'commit_search_url': 'https://api.github.com/search/commits?q={query}{&amp;page,per_page,sort,order}', 'emails_url': 'https://api.github.com/user/emails', 'emojis_url': 'https://api.github.com/emojis', 'events_url': 'https://api.github.com/events', 'feeds_url': 'https://api.github.com/feeds', 'followers_url': 'https://api.github.com/user/followers', 'following_url': 'https://api.github.com/user/following{/target}', 'gists_url': 'https://api.github.com/gists{/gist_id}', 'hub_url': 'https://api.github.com/hub', 'issue_search_url': 'https://api.github.com/search/issues?q={query}{&amp;page,per_page,sort,order}', 'issues_url': 'https://api.github.com/issues', 'keys_url': 'https://api.github.com/user/keys', 'notifications_url': 'https://api.github.com/notifications', 'organization_repositories_url': 'https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}', 'organization_url': 'https://api.github.com/orgs/{org}', 'public_gists_url': 'https://api.github.com/gists/public', 'rate_limit_url': 'https://api.github.com/rate_limit', 'repository_url': 'https://api.github.com/repos/{owner}/{repo}', 'repository_search_url': 'https://api.github.com/search/repositories?q={query}{&amp;page,per_page,sort,order}', 'current_user_repositories_url': 'https://api.github.com/user/repos{?type,page,per_page,sort}', 'starred_url': 'https://api.github.com/user/starred{/owner}{/repo}', 'starred_gists_url': 'https://api.github.com/gists/starred', 'team_url': 'https://api.github.com/teams', 'user_url': 'https://api.github.com/users/{user}', 'user_organizations_url': 'https://api.github.com/user/orgs', 'user_repositories_url': 'https://api.github.com/users/{user}/repos{?type,page,per_page,sort}', 'user_search_url': 'https://api.github.com/search/users?q={query}{&amp;page,per_page,sort,order}'}</span>
+</pre>
+      </div>
+      <p>
+       The
+       <code>
+        type
+       </code>
+       of the return value of
+       <code>
+        .json()
+       </code>
+       is a dictionary, so you can access values in the object by key.
+      </p>
+      <p>
+       You can do a lot with status codes and message bodies. But, if you need more information, like metadata about the response itself, you’ll need to look at the response’s headers.
+      </p>
+      <h3 id="headers">
+       Headers
+      </h3>
+      <p>
+       The response headers can give you useful information, such as the content type of the response payload and a time limit on how long to cache the response. To view these headers, access
+       <code>
+        .headers
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span>
+<span class="go">{'Server': 'GitHub.com', 'Date': 'Mon, 10 Dec 2018 17:49:54 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Status': '200 OK', 'X-RateLimit-Limit': '60', 'X-RateLimit-Remaining': '59', 'X-RateLimit-Reset': '1544467794', 'Cache-Control': 'public, max-age=60, s-maxage=60', 'Vary': 'Accept', 'ETag': 'W/"7dc470913f1fe9bb6c7355b50a0737bc"', 'X-GitHub-Media-Type': 'github.v3; format=json', 'Access-Control-Expose-Headers': 'ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type', 'Access-Control-Allow-Origin': '*', 'Strict-Transport-Security': 'max-age=31536000; includeSubdomains; preload', 'X-Frame-Options': 'deny', 'X-Content-Type-Options': 'nosniff', 'X-XSS-Protection': '1; mode=block', 'Referrer-Policy': 'origin-when-cross-origin, strict-origin-when-cross-origin', 'Content-Security-Policy': "default-src 'none'", 'Content-Encoding': 'gzip', 'X-GitHub-Request-Id': 'E439:4581:CF2351:1CA3E06:5C0EA741'}</span>
+</pre>
+      </div>
+      <p>
+       <code>
+        .headers
+       </code>
+       returns a dictionary-like object, allowing you to access header values by key. For example, to see the content type of the response payload, you can access
+       <code>
+        Content-Type
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]</span>
+<span class="go">'application/json; charset=utf-8'</span>
+</pre>
+      </div>
+      <p>
+       There is something special about this dictionary-like headers object, though. The HTTP spec defines headers to be case-insensitive, which means we are able to access these headers without worrying about their capitalization:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">'content-type'</span><span class="p">]</span>
+<span class="go">'application/json; charset=utf-8'</span>
+</pre>
+      </div>
+      <p>
+       Whether you use the key
+       <code>
+        'content-type'
+       </code>
+       or
+       <code>
+        'Content-Type'
+       </code>
+       , you’ll get the same value.
+      </p>
+      <p>
+       Now, you’ve learned the basics about
+       <code>
+        Response
+       </code>
+       . You’ve seen its most useful attributes and methods in action. Let’s take a step back and see how your responses change when you customize your
+       <code>
+        GET
+       </code>
+       requests.
+      </p>
+      <div class="w-100 text-center js-needs-scaling" style="transform-origin: 0 0;">
+       <div id="waldo-tag-5000">
+       </div>
+       <a class="small text-muted js-disclosure" href="/account/join/" rel="nofollow" style="display: none;">
+        <i aria-hidden="true" class="fa fa-info-circle">
+        </i>
+        Remove ads
+       </a>
+      </div>
+      <h2 id="query-string-parameters">
+       Query String Parameters
+      </h2>
+      <p>
+       One common way to customize a
+       <code>
+        GET
+       </code>
+       request is to pass values through
+       <a href="https://en.wikipedia.org/wiki/Query_string">
+        query string
+       </a>
+       parameters in the URL. To do this using
+       <code>
+        get()
+       </code>
+       , you pass data to
+       <code>
+        params
+       </code>
+       . For example, you can use GitHub’s
+       <a href="https://developer.github.com/v3/search/">
+        Search
+       </a>
+       API to look for the
+       <code>
+        requests
+       </code>
+       library:
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># Search GitHub's repositories for requests</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s1">'https://api.github.com/search/repositories'</span><span class="p">,</span>
+<span class="hll">    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'q'</span><span class="p">:</span> <span class="s1">'requests+language:python'</span><span class="p">},</span>
+</span><span class="p">)</span>
+
+<span class="c1"># Inspect some attributes of the `requests` repository</span>
+<span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">repository</span> <span class="o">=</span> <span class="n">json_response</span><span class="p">[</span><span class="s1">'items'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'Repository name: </span><span class="si">{repository["name"]}</span><span class="s1">'</span><span class="p">)</span>  <span class="c1"># Python 3.6+</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'Repository description: </span><span class="si">{repository["description"]}</span><span class="s1">'</span><span class="p">)</span>  <span class="c1"># Python 3.6+</span>
+</pre>
+      </div>
+      <p>
+       By passing the dictionary
+       <code>
+        {'q': 'requests+language:python'}
+       </code>
+       to the
+       <code>
+        params
+       </code>
+       parameter of
+       <code>
+        .get()
+       </code>
+       , you are able to modify the results that come back from the Search API.
+      </p>
+      <p>
+       You can pass
+       <code>
+        params
+       </code>
+       to
+       <code>
+        get()
+       </code>
+       in the form of a dictionary, as you have just done, or as a list of tuples:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">'https://api.github.com/search/repositories'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">params</span><span class="o">=</span><span class="p">[(</span><span class="s1">'q'</span><span class="p">,</span> <span class="s1">'requests+language:python'</span><span class="p">)],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       You can even pass the values as
+       <code>
+        bytes
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">'https://api.github.com/search/repositories'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">params</span><span class="o">=</span><span class="sa">b</span><span class="s1">'q=requests+language:python'</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       Query strings are useful for parameterizing
+       <code>
+        GET
+       </code>
+       requests. You can also customize your requests by adding or modifying the headers you send.
+      </p>
+      <h2 id="request-headers">
+       Request Headers
+      </h2>
+      <p>
+       To customize headers, you pass a dictionary of HTTP headers to
+       <code>
+        get()
+       </code>
+       using the
+       <code>
+        headers
+       </code>
+       parameter. For example, you can change your previous search request to highlight matching search terms in the results by specifying the
+       <code>
+        text-match
+       </code>
+       media type in the
+       <code>
+        Accept
+       </code>
+       header:
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s1">'https://api.github.com/search/repositories'</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'q'</span><span class="p">:</span> <span class="s1">'requests+language:python'</span><span class="p">},</span>
+<span class="hll">    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">'Accept'</span><span class="p">:</span> <span class="s1">'application/vnd.github.v3.text-match+json'</span><span class="p">},</span>
+</span><span class="p">)</span>
+
+<span class="c1"># View the new `text-matches` array which provides information</span>
+<span class="c1"># about your search term within the results</span>
+<span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">repository</span> <span class="o">=</span> <span class="n">json_response</span><span class="p">[</span><span class="s1">'items'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'Text matches: </span><span class="si">{repository["text_matches"]}</span><span class="s1">'</span><span class="p">)</span>
+</pre>
+      </div>
+      <p>
+       The
+       <code>
+        Accept
+       </code>
+       header tells the server what content types your application can handle. In this case, since you’re expecting the matching search terms to be highlighted, you’re using the header value
+       <code>
+        application/vnd.github.v3.text-match+json
+       </code>
+       , which is a proprietary GitHub
+       <code>
+        Accept
+       </code>
+       header where the content is a special JSON format.
+      </p>
+      <p>
+       Before you learn more ways to customize requests, let’s broaden the horizon by exploring other HTTP methods.
+      </p>
+      <h2 id="other-http-methods">
+       Other HTTP Methods
+      </h2>
+      <p>
+       Aside from
+       <code>
+        GET
+       </code>
+       , other popular HTTP methods include
+       <code>
+        POST
+       </code>
+       ,
+       <code>
+        PUT
+       </code>
+       ,
+       <code>
+        DELETE
+       </code>
+       ,
+       <code>
+        HEAD
+       </code>
+       ,
+       <code>
+        PATCH
+       </code>
+       , and
+       <code>
+        OPTIONS
+       </code>
+       .
+       <code>
+        requests
+       </code>
+       provides a method, with a similar signature to
+       <code>
+        get()
+       </code>
+       , for each of these HTTP methods:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">'https://httpbin.org/post'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">'key'</span><span class="p">:</span><span class="s1">'value'</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">'https://httpbin.org/put'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">'key'</span><span class="p">:</span><span class="s1">'value'</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">'https://httpbin.org/delete'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="s1">'https://httpbin.org/get'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">'https://httpbin.org/patch'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">'key'</span><span class="p">:</span><span class="s1">'value'</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="s1">'https://httpbin.org/get'</span><span class="p">)</span>
+</pre>
+      </div>
+      <p>
+       Each function call makes a request to the
+       <code>
+        httpbin
+       </code>
+       service using the corresponding HTTP method. For each method, you can inspect their responses in the same way you did before:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="s1">'https://httpbin.org/get'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]</span>
+<span class="go">'application/json'</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">'https://httpbin.org/delete'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="s1">'args'</span><span class="p">]</span>
+<span class="go">{}</span>
+</pre>
+      </div>
+      <p>
+       Headers, response bodies, status codes, and more are returned in the
+       <code>
+        Response
+       </code>
+       for each method. Next you’ll take a closer look at the
+       <code>
+        POST
+       </code>
+       ,
+       <code>
+        PUT
+       </code>
+       , and
+       <code>
+        PATCH
+       </code>
+       methods and learn how they differ from the other request types.
+      </p>
+      <div class="w-100 text-center js-needs-scaling" style="transform-origin: 0 0;">
+       <div id="waldo-tag-5002">
+       </div>
+       <a class="small text-muted js-disclosure" href="/account/join/" rel="nofollow" style="display: none;">
+        <i aria-hidden="true" class="fa fa-info-circle">
+        </i>
+        Remove ads
+       </a>
+      </div>
+      <h2 id="the-message-body">
+       The Message Body
+      </h2>
+      <p>
+       According to the HTTP specification,
+       <code>
+        POST
+       </code>
+       ,
+       <code>
+        PUT
+       </code>
+       , and the less common
+       <code>
+        PATCH
+       </code>
+       requests pass their data through the message body rather than through parameters in the query string. Using
+       <code>
+        requests
+       </code>
+       , you’ll pass the payload to the corresponding function’s
+       <code>
+        data
+       </code>
+       parameter.
+      </p>
+      <p>
+       <code>
+        data
+       </code>
+       takes a dictionary, a list of tuples, bytes, or a file-like object. You’ll want to adapt the data you send in the body of your request to the specific needs of the service you’re interacting with.
+      </p>
+      <p>
+       For example, if your request’s content type is
+       <code>
+        application/x-www-form-urlencoded
+       </code>
+       , you can send the form data as a dictionary:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">'https://httpbin.org/post'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">'key'</span><span class="p">:</span><span class="s1">'value'</span><span class="p">})</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       You can also send that same data as a list of tuples:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">'https://httpbin.org/post'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[(</span><span class="s1">'key'</span><span class="p">,</span> <span class="s1">'value'</span><span class="p">)])</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       If, however, you need to send JSON data, you can use the
+       <code>
+        json
+       </code>
+       parameter. When you pass JSON data via
+       <code>
+        json
+       </code>
+       ,
+       <code>
+        requests
+       </code>
+       will serialize your data and add the correct
+       <code>
+        Content-Type
+       </code>
+       header for you.
+      </p>
+      <p>
+       <a href="https://httpbin.org/">
+        httpbin.org
+       </a>
+       is a great resource created by the author of
+       <code>
+        requests
+       </code>
+       ,
+       <a href="https://realpython.com/interview-kenneth-reitz/">
+        Kenneth Reitz
+       </a>
+       . It’s a service that accepts test requests and responds with data about the requests. For instance, you can use it to inspect a basic
+       <code>
+        POST
+       </code>
+       request:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">'https://httpbin.org/post'</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">'key'</span><span class="p">:</span><span class="s1">'value'</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="s1">'data'</span><span class="p">]</span>
+<span class="go">'{"key": "value"}'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">json_response</span><span class="p">[</span><span class="s1">'headers'</span><span class="p">][</span><span class="s1">'Content-Type'</span><span class="p">]</span>
+<span class="go">'application/json'</span>
+</pre>
+      </div>
+      <p>
+       You can see from the response that the server received your request data and headers as you sent them.
+       <code>
+        requests
+       </code>
+       also provides this information to you in the form of a
+       <code>
+        PreparedRequest
+       </code>
+       .
+      </p>
+      <h2 id="inspecting-your-request">
+       Inspecting Your Request
+      </h2>
+      <p>
+       When you make a request, the
+       <code>
+        requests
+       </code>
+       library prepares the request before actually sending it to the destination server. Request preparation includes things like validating headers and serializing JSON content.
+      </p>
+      <p>
+       You can view the
+       <code>
+        PreparedRequest
+       </code>
+       by accessing
+       <code>
+        .request
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">'https://httpbin.org/post'</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">'key'</span><span class="p">:</span><span class="s1">'value'</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]</span>
+<span class="go">'application/json'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span>
+<span class="go">'https://httpbin.org/post'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span>
+<span class="go">b'{"key": "value"}'</span>
+</pre>
+      </div>
+      <p>
+       Inspecting the
+       <code>
+        PreparedRequest
+       </code>
+       gives you access to all kinds of information about the request being made such as payload, URL, headers, authentication, and more.
+      </p>
+      <p>
+       So far, you’ve made a lot of different kinds of requests, but they’ve all had one thing in common: they’re unauthenticated requests to public APIs. Many services you may come across will want you to authenticate in some way.
+      </p>
+      <h2 id="authentication">
+       Authentication
+      </h2>
+      <p>
+       Authentication helps a service understand who you are. Typically, you provide your credentials to a server by passing data through the
+       <code>
+        Authorization
+       </code>
+       header or a custom header defined by the service. All the request functions you’ve seen to this point provide a parameter called
+       <code>
+        auth
+       </code>
+       , which allows you to pass your credentials.
+      </p>
+      <p>
+       One example of an API that requires authentication is GitHub’s
+       <a href="https://developer.github.com/v3/users/#get-the-authenticated-user">
+        Authenticated User
+       </a>
+       API. This endpoint provides information about the authenticated user’s profile. To make a request to the Authenticated User API, you can pass your GitHub username and password in a tuple to
+       <code>
+        get()
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">getpass</span> <span class="k">import</span> <span class="n">getpass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com/user'</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="n">getpass</span><span class="p">()))</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       The request succeeded if the credentials you passed in the tuple to
+       <code>
+        auth
+       </code>
+       are valid. If you try to make this request with no credentials, you’ll see that the status code is
+       <code>
+        401 Unauthorized
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com/user'</span><span class="p">)</span>
+<span class="go">&lt;Response [401]&gt;</span>
+</pre>
+      </div>
+      <p>
+       When you pass your username and password in a tuple to the
+       <code>
+        auth
+       </code>
+       parameter,
+       <code>
+        requests
+       </code>
+       is applying the credentials using HTTP’s
+       <a href="https://en.wikipedia.org/wiki/Basic_access_authentication">
+        Basic access authentication scheme
+       </a>
+       under the hood.
+      </p>
+      <p>
+       Therefore, you could make the same request by passing explicit Basic authentication credentials using
+       <code>
+        HTTPBasicAuth
+       </code>
+       :
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">requests.auth</span> <span class="k">import</span> <span class="n">HTTPBasicAuth</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">getpass</span> <span class="k">import</span> <span class="n">getpass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">'https://api.github.com/user'</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">auth</span><span class="o">=</span><span class="n">HTTPBasicAuth</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="n">getpass</span><span class="p">())</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       Though you don’t need to be explicit for Basic authentication, you may want to authenticate using another method.
+       <code>
+        requests
+       </code>
+       provides other methods of authentication out of the box such as
+       <code>
+        HTTPDigestAuth
+       </code>
+       and
+       <code>
+        HTTPProxyAuth
+       </code>
+       .
+      </p>
+      <p>
+       You can even supply your own authentication mechanism. To do so, you must first create a subclass of
+       <code>
+        AuthBase
+       </code>
+       . Then, you implement
+       <code>
+        __call__()
+       </code>
+       :
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">requests.auth</span> <span class="k">import</span> <span class="n">AuthBase</span>
+
+<span class="k">class</span> <span class="nc">TokenAuth</span><span class="p">(</span><span class="n">AuthBase</span><span class="p">):</span>
+    <span class="sd">"""Implements a custom authentication scheme."""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="sd">"""Attach an API token to a custom auth header."""</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">'X-TokenAuth'</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="s1">'</span><span class="si">{self.token}</span><span class="s1">'</span>  <span class="c1"># Python 3.6+</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+
+<span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://httpbin.org/get'</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">TokenAuth</span><span class="p">(</span><span class="s1">'12345abcde-token'</span><span class="p">))</span>
+</pre>
+      </div>
+      <p>
+       Here, your custom
+       <code>
+        TokenAuth
+       </code>
+       mechanism receives a token, then includes that token in the
+       <code>
+        X-TokenAuth
+       </code>
+       header of your request.
+      </p>
+      <p>
+       Bad authentication mechanisms can lead to security vulnerabilities, so unless a service requires a custom authentication mechanism for some reason, you’ll always want to use a tried-and-true auth scheme like Basic or OAuth.
+      </p>
+      <p>
+       While you’re thinking about security, let’s consider dealing with SSL Certificates using
+       <code>
+        requests
+       </code>
+       .
+      </p>
+      <div class="w-100 text-center js-needs-scaling" style="transform-origin: 0 0;">
+       <div id="waldo-tag-5004">
+       </div>
+       <a class="small text-muted js-disclosure" href="/account/join/" rel="nofollow" style="display: none;">
+        <i aria-hidden="true" class="fa fa-info-circle">
+        </i>
+        Remove ads
+       </a>
+      </div>
+      <h2 id="ssl-certificate-verification">
+       SSL Certificate Verification
+      </h2>
+      <p>
+       Any time the data you are trying to send or receive is sensitive, security is important. The way that you communicate with secure sites over HTTP is by establishing an encrypted connection using SSL, which means that verifying the target server’s SSL Certificate is critical.
+      </p>
+      <p>
+       The good news is that
+       <code>
+        requests
+       </code>
+       does this for you by default. However, there are some cases where you might want to change this behavior.
+      </p>
+      <p>
+       If you want to disable SSL Certificate verification, you pass
+       <code>
+        False
+       </code>
+       to the
+       <code>
+        verify
+       </code>
+       parameter of the request function:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings</span>
+<span class="go">  InsecureRequestWarning)</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       <code>
+        requests
+       </code>
+       even warns you when you’re making an insecure request to help you keep your data safe!
+      </p>
+      <div class="alert alert-primary" role="alert">
+       <p>
+        <strong>
+         Note:
+        </strong>
+        <a href="http://docs.python-requests.org/en/master/user/advanced/#ca-certificates">
+         <code>
+          requests
+         </code>
+         uses a package called
+         <code>
+          certifi
+         </code>
+        </a>
+        to provide Certificate Authorities. This lets
+        <code>
+         requests
+        </code>
+        know which authorities it can trust. Therefore, you should update
+        <code>
+         certifi
+        </code>
+        frequently to keep your connections as secure as possible.
+       </p>
+      </div>
+      <h2 id="performance">
+       Performance
+      </h2>
+      <p>
+       When using
+       <code>
+        requests
+       </code>
+       , especially in a production application environment, it’s important to consider performance implications. Features like timeout control, sessions, and retry limits can help you keep your application running smoothly.
+      </p>
+      <h3 id="timeouts">
+       Timeouts
+      </h3>
+      <p>
+       When you make an inline request to an external service, your system will need to wait upon the response before moving on. If your application waits too long for that response, requests to your service could back up, your user experience could suffer, or your background jobs could hang.
+      </p>
+      <p>
+       By default,
+       <code>
+        requests
+       </code>
+       will wait indefinitely on the response, so you should almost always specify a timeout duration to prevent these things from happening. To set the request’s timeout, use the
+       <code>
+        timeout
+       </code>
+       parameter.
+       <code>
+        timeout
+       </code>
+       can be an integer or float representing the number of seconds to wait on a response before timing out:
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&lt;Response [200]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">3.05</span><span class="p">)</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       In the first request, the request will timeout after 1 second. In the second request, the request will timeout after 3.05 seconds.
+      </p>
+      <p>
+       <a href="http://docs.python-requests.org/en/master/user/advanced/#timeouts">
+        You can also pass a tuple
+       </a>
+       to
+       <code>
+        timeout
+       </code>
+       with the first element being a connect timeout (the time it allows for the client to establish a connection to the server), and the second being a read timeout (the time it will wait on a response once your client has established a connection):
+      </p>
+      <div class="highlight python repl">
+       <span class="repl-toggle" title="Toggle REPL prompts and output">
+        &gt;&gt;&gt;
+       </span>
+       <pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="go">&lt;Response [200]&gt;</span>
+</pre>
+      </div>
+      <p>
+       If the request establishes a connection within 2 seconds and receives data within 5 seconds of the connection being established, then the response will be returned as it was before. If the request times out, then the function will raise a
+       <code>
+        Timeout
+       </code>
+       exception:
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="k">import</span> <span class="n">Timeout</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">Timeout</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'The request timed out'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'The request did not time out'</span><span class="p">)</span>
+</pre>
+      </div>
+      <p>
+       Your program can catch the
+       <code>
+        Timeout
+       </code>
+       exception and respond accordingly.
+      </p>
+      <h3 id="the-session-object">
+       The Session Object
+      </h3>
+      <p>
+       Until now, you’ve been dealing with high level
+       <code>
+        requests
+       </code>
+       APIs such as
+       <code>
+        get()
+       </code>
+       and
+       <code>
+        post()
+       </code>
+       . These functions are abstractions of what’s going on when you make your requests. They hide implementation details such as how connections are managed so that you don’t have to worry about them.
+      </p>
+      <p>
+       Underneath those abstractions is a class called
+       <code>
+        Session
+       </code>
+       . If you need to fine-tune your control over how requests are being made or improve the performance of your requests, you may need to use a
+       <code>
+        Session
+       </code>
+       instance directly.
+      </p>
+      <p>
+       Sessions are used to persist parameters across requests. For example, if you want to use the same authentication across multiple requests, you could use a session:
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">getpass</span> <span class="k">import</span> <span class="n">getpass</span>
+
+<span class="c1"># By using a context manager, you can ensure the resources used by</span>
+<span class="c1"># the session will be released after use</span>
+<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="n">getpass</span><span class="p">())</span>
+
+    <span class="c1"># Instead of requests.get(), you'll use session.get()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com/user'</span><span class="p">)</span>
+
+<span class="c1"># You can inspect the response just like you did before</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre>
+      </div>
+      <p>
+       Each time you make a request with
+       <code>
+        session
+       </code>
+       , once it has been initialized with authentication credentials, the credentials will be persisted.
+      </p>
+      <p>
+       The primary performance optimization of sessions comes in the form of persistent connections. When your app makes a connection to a server using a
+       <code>
+        Session
+       </code>
+       , it keeps that connection around in a connection pool. When your app wants to connect to the same server again, it will reuse a connection from the pool rather than establishing a new one.
+      </p>
+      <div class="w-100 text-center js-needs-scaling" style="transform-origin: 0 0;">
+       <div id="waldo-tag-5257">
+       </div>
+       <a class="small text-muted js-disclosure" href="/account/join/" rel="nofollow" style="display: none;">
+        <i aria-hidden="true" class="fa fa-info-circle">
+        </i>
+        Remove ads
+       </a>
+      </div>
+      <h3 id="max-retries">
+       Max Retries
+      </h3>
+      <p>
+       When a request fails, you may want your application to retry the same request. However,
+       <code>
+        requests
+       </code>
+       will not do this for you by default. To apply this functionality, you need to implement a custom
+       <a href="http://docs.python-requests.org/en/master/user/advanced/#transport-adapters">
+        Transport Adapter
+       </a>
+       .
+      </p>
+      <p>
+       Transport Adapters let you define a set of configurations per service you’re interacting with. For example, let’s say you want all requests to
+       <code>
+        https://api.github.com
+       </code>
+       to retry three times before finally raising a
+       <code>
+        ConnectionError
+       </code>
+       . You would build a Transport Adapter, set its
+       <code>
+        max_retries
+       </code>
+       parameter, and mount it to an existing
+       <code>
+        Session
+       </code>
+       :
+      </p>
+      <div class="highlight python">
+       <pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">requests.adapters</span> <span class="k">import</span> <span class="n">HTTPAdapter</span>
+<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="k">import</span> <span class="ne">ConnectionError</span>
+
+<span class="n">github_adapter</span> <span class="o">=</span> <span class="n">HTTPAdapter</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+
+<span class="c1"># Use `github_adapter` for all requests to endpoints that start with this URL</span>
+<span class="n">session</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">,</span> <span class="n">github_adapter</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://api.github.com'</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ConnectionError</span> <span class="k">as</span> <span class="n">ce</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ce</span><span class="p">)</span>
+</pre>
+      </div>
+      <p>
+       When you mount the
+       <code>
+        HTTPAdapter
+       </code>
+       ,
+       <code>
+        github_adapter
+       </code>
+       , to
+       <code>
+        session
+       </code>
+       ,
+       <code>
+        session
+       </code>
+       will adhere to its configuration for each request to https://api.github.com.
+      </p>
+      <p>
+       Timeouts, Transport Adapters, and sessions are for keeping your code efficient and your application resilient.
+      </p>
+      <h2 id="conclusion">
+       Conclusion
+      </h2>
+      <p>
+       You’ve come a long way in learning about Python’s powerful
+       <code>
+        requests
+       </code>
+       library.
+      </p>
+      <p>
+       You’re now able to:
+      </p>
+      <ul>
+       <li>
+        Make requests using a variety of different HTTP methods such as
+        <code>
+         GET
+        </code>
+        ,
+        <code>
+         POST
+        </code>
+        , and
+        <code>
+         PUT
+        </code>
+       </li>
+       <li>
+        Customize your requests by modifying headers, authentication, query strings, and message bodies
+       </li>
+       <li>
+        Inspect the data you send to the server and the data the server sends back to you
+       </li>
+       <li>
+        Work with SSL Certificate verification
+       </li>
+       <li>
+        Use
+        <code>
+         requests
+        </code>
+        effectively using
+        <code>
+         max_retries
+        </code>
+        ,
+        <code>
+         timeout
+        </code>
+        , Sessions, and Transport Adapters
+       </li>
+      </ul>
+      <p>
+       Because you learned how to use
+       <code>
+        requests
+       </code>
+       , you’re equipped to explore the wide world of web services and build awesome applications using the fascinating data they provide.
+      </p>
+      <div class="border rounded p-3 card mb-2">
+       <p class="mb-0">
+        <span class="badge badge-pill badge-success">
+         <i aria-hidden="true" class="fa fa-play-circle">
+         </i>
+         Watch Now
+        </span>
+        This tutorial has a related video course created by the Real Python team. Watch it together with the written tutorial to deepen your understanding:
+        <a class="stretched-link text-success" href="/courses/python-requests/">
+         <strong>
+          Making HTTP Requests With Python
+         </strong>
+        </a>
+       </p>
+      </div>
+     </div>
+     <div class="card mt-4 mb-4 bg-secondary">
+      <p class="card-header h3 text-center bg-light">
+       🐍 Python Tricks 💌
+      </p>
+      <div class="card-body">
+       <div class="container">
+        <div class="row">
+         <div class="col-xs-12 col-sm-7">
+          <p>
+           Get a short &amp; sweet
+           <strong>
+            Python Trick
+           </strong>
+           delivered to your inbox every couple of days. No spam ever. Unsubscribe any time. Curated by the Real Python team.
+          </p>
+         </div>
+         <div class="col-xs-12 col-sm-5">
+          <img alt="Python Tricks Dictionary Merge" class="img-fluid rounded mb-3" height="490" src="/static/pytrick-dict-merge.4201a0125a5e.png" width="738"/>
+         </div>
+        </div>
+        <div class="row mb-3">
+         <form action="/optins/process/" class="col-12" method="post">
+          <input name="csrfmiddlewaretoken" type="hidden" value="sdSa5QcGrWrq66LSXY2mus98ItIxZky5V6fb0AwVDigfTEr8muZLvx1UAvBR45Cd"/>
+          <input name="slug" type="hidden" value="static-python-tricks-footer"/>
+          <div class="form-group">
+           <input class="form-control form-control-lg" name="email" placeholder="Email Address" required="" type="email"/>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">
+           Send Me Python Tricks »
+          </button>
+         </form>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="card mt-4" id="author">
+      <p class="card-header h3">
+       About
+       <strong>
+        Alex Ronquillo
+       </strong>
+      </p>
+      <div class="card-body">
+       <div class="container">
+        <div class="row">
+         <div class="col-12 col-md-3 align-self-center">
+          <a href="/team/aronquillo/">
+           <img alt="Alex Ronquillo" class="rounded-circle img-fluid w-100 mb-0" sizes="25vw" src="https://files.realpython.com/media/IMG_0116.f88cbfca15da.jpg" srcset="https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/IMG_0116.f88cbfca15da.jpg&amp;w=125&amp;sig=d01efc30507e0b98cbe1130ee9c08cf34a02fc97 125w, https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/IMG_0116.f88cbfca15da.jpg&amp;w=250&amp;sig=0a7da0795282bf44136b1ad372da20f05b80f1b4 250w, https://files.realpython.com/media/IMG_0116.f88cbfca15da.jpg 500w"/>
+          </a>
+         </div>
+         <div class="col mt-3">
+          <p>
+           Alex Ronquillo is a Software Engineer at YouVersion. He’s an avid Pythonista who is also passionate about writing and game development.
+          </p>
+          <a class="card-link" href="/team/aronquillo/">
+           » More about Alex
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+      <hr class="my-0"/>
+      <div class="card-body pb-0">
+       <div class="container">
+        <div class="row">
+         <p>
+          <em>
+           Each tutorial at Real Python is created by a team of developers so that it meets our high quality standards. The team members who worked on this tutorial are:
+          </em>
+         </p>
+        </div>
+        <div class="row align-items-center w-100 mx-auto">
+         <div class="col-4 col-sm-2 align-self-center">
+          <a href="/team/asantos/">
+           <img alt="Aldren Santos" class="rounded-circle img-fluid w-100" sizes="10vw" src="https://files.realpython.com/media/asantos-avatar.888c78fffab3.jpg" srcset="https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/asantos-avatar.888c78fffab3.jpg&amp;w=175&amp;sig=a095ca193d3f40e73e6921403c1c43e48c9a4bdc 175w, https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/asantos-avatar.888c78fffab3.jpg&amp;w=350&amp;sig=28c0dc29376daf4ca29d5f47b3708b873c21af76 350w, https://files.realpython.com/media/asantos-avatar.888c78fffab3.jpg 700w"/>
+          </a>
+         </div>
+         <div class="col pl-0 d-none d-sm-block">
+          <a class="card-link" href="/team/asantos/">
+           <p>
+            Aldren
+           </p>
+          </a>
+         </div>
+         <div class="col-4 col-sm-2 align-self-center">
+          <a href="/team/bsolomon/">
+           <img alt="Brad Solomon" class="rounded-circle img-fluid w-100" sizes="10vw" src="https://files.realpython.com/media/bsolomon.2a5a05833ac0.jpg" srcset="https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/bsolomon.2a5a05833ac0.jpg&amp;w=234&amp;sig=853eac2d1d5be58ddd0495dc2a21d9e96519fdf6 234w, https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/bsolomon.2a5a05833ac0.jpg&amp;w=469&amp;sig=25311cd6c3fabe7bfe4e314ea4c30a84b3b5258f 469w, https://files.realpython.com/media/bsolomon.2a5a05833ac0.jpg 938w"/>
+          </a>
+         </div>
+         <div class="col pl-0 d-none d-sm-block">
+          <a class="card-link" href="/team/bsolomon/">
+           <p>
+            Brad
+           </p>
+          </a>
+         </div>
+         <div class="col-4 col-sm-2 align-self-center">
+          <a href="/team/jjablonski/">
+           <img alt="Joanna Jablonski" class="rounded-circle img-fluid w-100" sizes="10vw" src="https://files.realpython.com/media/jjablonksi-avatar.e37c4f83308e.jpg" srcset="https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/jjablonksi-avatar.e37c4f83308e.jpg&amp;w=200&amp;sig=d779dbceba743afb659648000525a6a71656ae98 200w, https://robocrop.realpython.net/?url=https%3A//files.realpython.com/media/jjablonksi-avatar.e37c4f83308e.jpg&amp;w=400&amp;sig=99ce401a9a219f6b406309e90925252be1900dfc 400w, https://files.realpython.com/media/jjablonksi-avatar.e37c4f83308e.jpg 800w"/>
+          </a>
+         </div>
+         <div class="col pl-0 d-none d-sm-block">
+          <a class="card-link" href="/team/jjablonski/">
+           <p>
+            Joanna
+           </p>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="sidebar-module sidebar-module-inset p-0 my-4" style="overflow:hidden;">
+      <div style="display:block;position:relative;">
+       <div style="display:block;width:100%;padding-top:25%;">
+       </div>
+       <div class="rpad" data-unit="4x1" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;">
+       </div>
+      </div>
+     </div>
+     <div class="card mt-4" id="reader-comments">
+      <p class="card-header h3">
+       What Do You Think?
+      </p>
+      <div class="text-center mt-3 mb-0 p-0">
+       <a class="mr-1 badge badge-twitter text-light" href="https://twitter.com/intent/tweet/?text=Check out this %23Python tutorial: Python%E2%80%99s%20Requests%20Library%20%28Guide%29 by @realpython&amp;url=https%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-twitter text-light">
+        </i>
+        Tweet
+       </a>
+       <a class="mr-1 badge badge-facebook text-light" href="https://facebook.com/sharer/sharer.php?u=https%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-facebook text-light">
+        </i>
+        Share
+       </a>
+       <a class="mr-1 badge badge-red text-light" href="mailto:?subject=Python article for you&amp;body=Check out this Python tutorial:%0A%0APython%E2%80%99s%20Requests%20Library%20%28Guide%29%0A%0Ahttps%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-envelope text-light">
+        </i>
+        Email
+       </a>
+      </div>
+      <div class="card-body">
+       <div class="alert alert-dark">
+        <p class="mb-0">
+         <strong>
+          Real Python Comment Policy:
+         </strong>
+         The most useful comments are those written with the goal of learning from or helping out other readers—after reading the whole article and all the earlier comments. Complaints and insults generally won’t make the cut here.
+        </p>
+       </div>
+       <div class="mb-4" id="disqus_thread">
+       </div>
+      </div>
+     </div>
+     <div class="card mt-4 mb-4">
+      <p class="card-header h3">
+       Keep Learning
+      </p>
+      <div class="card-body">
+       <p class="mb-0">
+        Related Tutorial Categories:
+        <a class="badge badge-light text-muted" href="/tutorials/intermediate/">
+         intermediate
+        </a>
+        <a class="badge badge-light text-muted" href="/tutorials/web-dev/">
+         web-dev
+        </a>
+       </p>
+       <p class="mt-3 mb-0">
+        Recommended Video Course:
+        <a class="text-success" href="/courses/python-requests/">
+         Making HTTP Requests With Python
+        </a>
+       </p>
+      </div>
+     </div>
+     <div class="modal fade" id="rpvc" role="dialog" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+       <div class="modal-content">
+        <div class="modal-header border-0 mt-3">
+         <div class="col-12 modal-title text-center">
+          <h2 class="my-0 mx-5">
+           Master
+           <u>
+            Real-World Python Skills
+           </u>
+           With Unlimited Access to Real Python
+          </h2>
+          <p class="text-center text-muted mt-2 mb-1">
+           Already a member?
+           <a href="/account/login/">
+            Log In
+           </a>
+          </p>
+         </div>
+        </div>
+        <div class="modal-body bg-light">
+         <div class="col-12 text-center">
+          <p class="mb-2 mt-3">
+           <a href="/account/join/?utm_source=rp&amp;utm_medium=web&amp;utm_campaign=pwn&amp;utm_content=v1">
+            <img class="w-50 mb-2" src="/static/videos/lesson-locked.f5105cfd26db.svg"/>
+           </a>
+          </p>
+          <p class="mx-auto w-66 mb-3">
+           <strong>
+            Join us and get access to hundreds of tutorials, hands-on video courses, and a community of expert Pythonistas:
+           </strong>
+          </p>
+          <p>
+           <a class="btn btn-primary btn-lg px-4" href="/account/join/?utm_source=rp&amp;utm_medium=web&amp;utm_campaign=pwn&amp;utm_content=v1">
+            See Membership Options »
+           </a>
+          </p>
+         </div>
+        </div>
+        <div class="modal-footer border-0">
+         <a class="text-muted btn" data-dismiss="modal" href="#!">
+          Close
+         </a>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <aside class="col-md-7 col-lg-4">
+     <div class="card mb-3 bg-secondary">
+      <form action="/optins/process/" class="card-body" method="post">
+       <div class="form-group">
+        <p class="h5 text-muted text-center">
+         — FREE Email Series —
+        </p>
+        <p class="h3 text-center">
+         🐍 Python Tricks 💌
+        </p>
+        <p>
+         <img alt="Python Tricks Dictionary Merge" class="img-fluid rounded" height="490" src="/static/pytrick-dict-merge.4201a0125a5e.png" width="738"/>
+        </p>
+       </div>
+       <div class="form-group">
+        <input name="csrfmiddlewaretoken" type="hidden" value="sdSa5QcGrWrq66LSXY2mus98ItIxZky5V6fb0AwVDigfTEr8muZLvx1UAvBR45Cd"/>
+        <input name="slug" type="hidden" value="static-python-tricks-sidebar"/>
+        <input class="form-control form-control-md" name="email" placeholder="Email…" required="" type="email"/>
+       </div>
+       <button class="btn btn-primary btn-md btn-block" name="submit" type="submit">
+        Get Python Tricks »
+       </button>
+       <p class="mb-0 mt-2 text-muted text-center">
+        🔒 No spam. Unsubscribe any time.
+       </p>
+      </form>
+     </div>
+     <div class="sidebar-module sidebar-module-inset border">
+      <p class="h4">
+       <a class="link-unstyled" href="/tutorials/all/">
+        All Tutorial Topics
+       </a>
+      </p>
+      <a class="badge badge-light text-muted" href="/tutorials/advanced/">
+       advanced
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/api/">
+       api
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/basics/">
+       basics
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/best-practices/">
+       best-practices
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/community/">
+       community
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/databases/">
+       databases
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/data-science/">
+       data-science
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/devops/">
+       devops
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/django/">
+       django
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/docker/">
+       docker
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/flask/">
+       flask
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/front-end/">
+       front-end
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/intermediate/">
+       intermediate
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/machine-learning/">
+       machine-learning
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/python/">
+       python
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/testing/">
+       testing
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/tools/">
+       tools
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/web-dev/">
+       web-dev
+      </a>
+      <a class="badge badge-light text-muted" href="/tutorials/web-scraping/">
+       web-scraping
+      </a>
+     </div>
+     <div class="sidebar-module sidebar-module-inset p-0" style="overflow:hidden;">
+      <div style="display:block;position:relative;">
+       <div style="display:block;width:100%;padding-top:100%;">
+       </div>
+       <div class="rpad" data-unit="1x1" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;">
+       </div>
+      </div>
+     </div>
+     <div class="sidebar-sticky">
+      <div class="sidebar-module sidebar-module-inset border">
+       <p class="h4">
+        <a class="link-unstyled" href="#toc">
+         Table of Contents
+        </a>
+       </p>
+       <div class="toc">
+        <ul>
+         <li>
+          <a href="#getting-started-with-requests">
+           Getting Started With requests
+          </a>
+         </li>
+         <li>
+          <a href="#the-get-request">
+           The GET Request
+          </a>
+         </li>
+         <li>
+          <a href="#the-response">
+           The Response
+          </a>
+          <ul>
+           <li>
+            <a href="#status-codes">
+             Status Codes
+            </a>
+           </li>
+           <li>
+            <a href="#content">
+             Content
+            </a>
+           </li>
+           <li>
+            <a href="#headers">
+             Headers
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li>
+          <a href="#query-string-parameters">
+           Query String Parameters
+          </a>
+         </li>
+         <li>
+          <a href="#request-headers">
+           Request Headers
+          </a>
+         </li>
+         <li>
+          <a href="#other-http-methods">
+           Other HTTP Methods
+          </a>
+         </li>
+         <li>
+          <a href="#the-message-body">
+           The Message Body
+          </a>
+         </li>
+         <li>
+          <a href="#inspecting-your-request">
+           Inspecting Your Request
+          </a>
+         </li>
+         <li>
+          <a href="#authentication">
+           Authentication
+          </a>
+         </li>
+         <li>
+          <a href="#ssl-certificate-verification">
+           SSL Certificate Verification
+          </a>
+         </li>
+         <li>
+          <a href="#performance">
+           Performance
+          </a>
+          <ul>
+           <li>
+            <a href="#timeouts">
+             Timeouts
+            </a>
+           </li>
+           <li>
+            <a href="#the-session-object">
+             The Session Object
+            </a>
+           </li>
+           <li>
+            <a href="#max-retries">
+             Max Retries
+            </a>
+           </li>
+          </ul>
+         </li>
+         <li>
+          <a href="#conclusion">
+           Conclusion
+          </a>
+         </li>
+        </ul>
+       </div>
+      </div>
+      <div class="sidebar-module sidebar-module-inset text-center my-3 py-0">
+       <a class="mr-1 badge badge-twitter text-light" href="https://twitter.com/intent/tweet/?text=Check out this %23Python tutorial: Python%E2%80%99s%20Requests%20Library%20%28Guide%29 by @realpython&amp;url=https%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-twitter text-light">
+        </i>
+        Tweet
+       </a>
+       <a class="mr-1 badge badge-facebook text-light" href="https://facebook.com/sharer/sharer.php?u=https%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-facebook text-light">
+        </i>
+        Share
+       </a>
+       <a class="mr-1 badge badge-red text-light" href="mailto:?subject=Python article for you&amp;body=Check out this Python tutorial:%0A%0APython%E2%80%99s%20Requests%20Library%20%28Guide%29%0A%0Ahttps%3A//realpython.com/python-requests/" rel="nofollow" target="_blank">
+        <i class="mr-1 fa fa-envelope text-light">
+        </i>
+        Email
+       </a>
+      </div>
+      <div class="sidebar-module sidebar-module-inset border card">
+       <p>
+        <span class="badge badge-pill badge-success">
+         <i aria-hidden="true" class="fa fa-play-circle mr-1">
+         </i>
+         Recommended Video Course
+        </span>
+        <br/>
+        <a class="stretched-link text-success" href="/courses/python-requests/">
+         Making HTTP Requests With Python
+        </a>
+       </p>
+      </div>
+      <div class="sidebar-module sidebar-module-inset p-0" style="overflow:hidden;">
+       <div style="display:block;position:relative;">
+        <div style="display:block;width:100%;padding-top:25%;">
+        </div>
+        <div class="rpad" data-unit="4x1" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;">
+        </div>
+       </div>
+      </div>
+     </div>
+    </aside>
+   </div>
+  </div>
+  <footer class="footer">
+   <div class="container">
+    <p class="text-center text-muted">
+     © 2012–2019 Real Python ⋅
+     <a href="/newsletter/">
+      Newsletter
+     </a>
+     ⋅
+     <a href="https://www.youtube.com/realpython">
+      YouTube
+     </a>
+     ⋅
+     <a href="https://twitter.com/realpython">
+      Twitter
+     </a>
+     ⋅
+     <a href="https://facebook.com/LearnRealPython">
+      Facebook
+     </a>
+     ⋅
+     <a href="https://www.instagram.com/realpython/">
+      Instagram
+     </a>
+     <br/>
+     <a href="/">
+      Python Tutorials
+     </a>
+     ⋅
+     <a href="/search">
+      Search
+     </a>
+     ⋅
+     <a href="/privacy-policy/">
+      Privacy Policy
+     </a>
+     ⋅
+     <a href="/sponsorships/">
+      Advertise
+     </a>
+     ⋅
+     <a href="/contact/">
+      Contact
+     </a>
+     <br/>
+     ❤️ Happy Pythoning!
+    </p>
+   </div>
+  </footer>
+  <script>
+   (function(document, history, location) {
+        var HISTORY_SUPPORT = !!(history && history.pushState);
+
+        var anchorScrolls = {
+          ANCHOR_REGEX: /^#[^ ]+$/,
+          OFFSET_HEIGHT_PX: 120,
+
+          /**
+           * Establish events, and fix initial scroll position if a hash is provided.
+           */
+          init: function() {
+            this.scrollToCurrent();
+            window.addEventListener('hashchange', this.scrollToCurrent.bind(this));
+            document.body.addEventListener('click', this.delegateAnchors.bind(this));
+          },
+
+          /**
+           * Return the offset amount to deduct from the normal scroll position.
+           * Modify as appropriate to allow for dynamic calculations
+           */
+          getFixedOffset: function() {
+            return this.OFFSET_HEIGHT_PX;
+          },
+
+          /**
+           * If the provided href is an anchor which resolves to an element on the
+           * page, scroll to it.
+           * @param  {String} href
+           * @return {Boolean} - Was the href an anchor.
+           */
+          scrollIfAnchor: function(href, pushToHistory) {
+            var match, rect, anchorOffset;
+
+            if(!this.ANCHOR_REGEX.test(href)) {
+              return false;
+            }
+
+            match = document.getElementById(href.slice(1));
+
+            if(match) {
+              rect = match.getBoundingClientRect();
+              anchorOffset = window.pageYOffset + rect.top - this.getFixedOffset();
+              window.scrollTo(window.pageXOffset, anchorOffset);
+
+              // Add the state to history as-per normal anchor links
+              if(HISTORY_SUPPORT && pushToHistory) {
+                history.pushState({}, document.title, location.pathname + href);
+              }
+            }
+
+            return !!match;
+          },
+
+          /**
+           * Attempt to scroll to the current location's hash.
+           */
+          scrollToCurrent: function() {
+            this.scrollIfAnchor(window.location.hash);
+          },
+
+          /**
+           * If the click event's target was an anchor, fix the scroll position.
+           */
+          delegateAnchors: function(e) {
+            var elem = e.target;
+
+            if(
+              elem.nodeName === 'A' &&
+              this.scrollIfAnchor(elem.getAttribute('href'), true)
+            ) {
+              e.preventDefault();
+            }
+          }
+        };
+
+        window.addEventListener(
+          'DOMContentLoaded', anchorScrolls.init.bind(anchorScrolls)
+        );
+      })(window.document, window.history, window.location);
+  </script>
+  <script src="/static/jquery.min.220afd743d9e.js">
+  </script>
+  <script src="/static/popper.min.e21a6649041e.js">
+  </script>
+  <script src="/static/bootstrap.min.e1d98d47689e.js">
+  </script>
+  <script src="/static/repl-toggle.0c6f07cf3eee.js">
+  </script>
+  <script>
+   window.rp_prop_id = '58946116052';
+  </script>
+  <script async="" src="https://srv.realpython.net/tag.js">
+  </script>
+  <script src="https://cdn.thisiswaldo.com/static/js/2153.js">
+  </script>
+  <script>
+   (function() {
+    function throttle(a, b) { var c, d; return function () { var e = this, f = arguments, g = +new Date; c && g < c + a ? (clearTimeout(d), d = setTimeout(function () { c = g, b.apply(e, f) }, a)) : (c = g, b.apply(e, f)) } }
+    var elems = document.getElementsByClassName("js-needs-scaling");
+    var resizeAll = function() {
+      Array.prototype.forEach.call(elems, function(elem) {
+        var frames = elem.getElementsByTagName("iframe")
+        if (frames.length === 0) {
+          return;
+        }
+        var disclosure = elem.getElementsByClassName("js-disclosure");
+        if (disclosure.length > 0) {
+          disclosure[0].style.display = "";
+        } else {
+          disclosure[0].style.display = "none";
+        }
+        if (frames[0].clientWidth <= elem.parentElement.clientWidth) {
+          elem.style.transform = "";
+          elem.classList.add("text-center");
+          return;
+        }
+        elem.classList.remove("text-center");
+        elem.style.transform = "scale(" + elem.clientWidth / frames[0].width + ")";
+      });
+    }
+    var periodicResize = function() {
+      resizeAll();
+      setTimeout(periodicResize, 100);
+    }
+    setTimeout(periodicResize, 100);
+  })();
+  </script>
+  <script async="" id="dsq-count-scr" src="https://realpython.disqus.com/count.js">
+  </script>
+  <script>
+   var disqus_config = function () {
+      this.page.url = 'https://realpython.com/python-requests/';
+      this.page.identifier = 'https://realpython.com/python-requests/';
+      this.callbacks.onReady = [function() {
+        if (window.onDisqusReady) {
+          window.onDisqusReady();
+        }
+      }];
+    };
+    var disqus_script_url = 'https://realpython.disqus.com/embed.js';
+  </script>
+  <script defer="" src="/static/lazydisqus.3a3e39583b32.js">
+  </script>
+  <script async="" src="https://cdn.onesignal.com/sdks/OneSignalSDK.js">
+  </script>
+  <script>
+   var OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "c0081e20-a523-42bb-b0ac-04c5a9e8bf40"
+      });
+    });
+  </script>
+  <script defer="" src="/static/articlevc.11f8c3a3f08d.js">
+  </script>
+  <script type="application/ld+json">
+   {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "Python’s Requests Library (Guide)",
+    
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://files.realpython.com/media/Python-Requests-Library-Tutorial_Watermarked.3c9dfdc7b014.jpg",
+      "width": 1920,
+      "height": 1080
+    },
+    
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://realpython.com/python-requests/"
+    },
+    "datePublished": "2019-01-23T06:00:00+00:00",
+    "dateModified": "2019-01-21T23:10:29.056756+00:00",
+     "publisher": {
+      "@type": "Organization",
+      "name": "Real Python",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://realpython.com/static/real-python-logo-square-tiny.b2452b6d3823.png",
+        "width": 60,
+        "height": 60
+      }
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Real Python",
+      "url": "https://realpython.com",
+      "logo": "https://realpython.com/static/real-python-logo-square.28474fda9228.png"
+    },
+    "description": "In this tutorial on Python&#39;s &quot;requests&quot; library, you&#39;ll see some of the most useful features that requests has to offer as well as how to customize and optimize those features. You&#39;ll learn how to use requests efficiently and stop requests to external services from slowing down your application."
+  }
+  </script>
+  <script>
+   var _dcq = _dcq || [];
+  var _dcs = _dcs || {};
+  _dcs.account = '6214500';
+
+  (function() {
+    var dc = document.createElement('script');
+    dc.type = 'text/javascript'; dc.async = true;
+    dc.src = '//tag.getdrip.com/6214500.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(dc, s);
+  })();
+  </script>
+  <script>
+   !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2220911568135371');
+  fbq('track', 'PageView');
+  </script>
+  <noscript>
+   <img height="1" src="https://www.facebook.com/tr?id=2220911568135371&amp;ev=PageView&amp;noscript=1" style="display:none" width="1"/>
+  </noscript>
+ </body>
+</html>
