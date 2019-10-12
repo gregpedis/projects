@@ -87,16 +87,6 @@ class HuffmanEncoder:
             encoding_table[huffman_node.symbol] = encoding_value
 
 
-# This method takes a list of arguments and flattens it as a string.
-def get_input(input_list):
-    text_input = ""
-    # Range starts at 1, since argv[0] is the script's name, which should not be encoded.
-    for list_index in range(1, len(input_list)):
-        text_input += input_list[list_index] + " "
-    # Remove the last whitespace character by the [:-1] syntax.
-    return text_input[:-1]
-
-
 # This methods prints a list in the form of (character, frequency, Huffman code).
 def print_frequencies_codes(frequency_table, encoding_table):
     print("Char     Freq        Code")
@@ -119,7 +109,9 @@ if __name__ == '__main__':
     if len(argv) < 2:
         print("A string input was not provided.")
     else:
-        text_input = get_input(argv)
+        # Joining the input starting from 1, 
+        # since the first argument is the script's name.
+        text_input = " ".join(argv[1:])
         print("\nStarting Huffman coding for input:")
         print(f"{text_input}\n")
 
