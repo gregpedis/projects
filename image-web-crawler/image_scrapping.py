@@ -134,6 +134,8 @@ def extract_image(image_url):
 def soup_scraping(url, depth):
     url_parts = get_url_parts(url)
 
+    for part in url_parts:
+        print(part)
     folder_path = url_parts[1] + url_parts[3]
     folder_path = re.sub('[\/*:#-?"<>]','_',folder_path)   
     set_folder_hierarchy(folder_path)
@@ -161,6 +163,7 @@ def parse_arguments(args):
         return (None, 0)
     else:
         url = args[0]
+        print(url)
         depth = int(args[1]) if len(args) >= 2 and int(args[1]) > 0 else 0
         return (url, depth)
 
