@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests as req
+from requests.exceptions import Timeout
 import uuid
 import sys
 import os
@@ -9,9 +10,8 @@ IMAGE_FILE_FORMATS = {'.jpg', '.jpeg', '.jif', '.jpe',
                       '.png', '.bpm', '.gif', '.svg',
                       '.heif', '.heic'}
 
-ROOT_FOLDER = "harvested_websites"
-RELATIVE_FOLDER_PATH = "soup_folder"
-IMAGES_FOLDER = "images"
+BASE_FOLDER = "harvested_websites"
+IMAGES_FOLDER = "images_folder"
 
 SOUP_FILE = "pretty_soup.txt"
 IMAGES_FILE = "soup_imgs.txt"
@@ -22,10 +22,15 @@ URL_PREFIX_UNTRUSTED = "http://"
 URL_PREFIX_1 = "https://"
 URL_PREFIX_2 = "www."
 
+ROOT_FOLDER = os.getcwd()
+
 
 def set_folder_hierarchy(folder_path):
-    os.makedirs(ROOT_FOLDER, exist_ok=True)
     os.chdir(ROOT_FOLDER)
+    folder_path = folder_path[:32] + '_' + str(uuid.uuid4())[:8]
+
+    os.makedirs(BASE_FOLDER, exist_ok=True)
+    os.chdir(BASE_FOLDER)
 
     os.makedirs(folder_path, exist_ok=True)
     os.chdir(folder_path)
@@ -38,12 +43,22 @@ def get_url_parts(url):
     stripped_url = url.replace(URL_PREFIX_1, '').replace(URL_PREFIX_2, '')
 
     sep = stripped_url.find('/')
-    path = stripped_url[sep:]
-    base_url = stripped_url[:sep]
+    if sep == -1:
+        path = ''
+        base_url = stripped_url
+    else:
+        path = stripped_url[sep:]
+        base_url = stripped_url[:sep]
 
     dot = base_url.rfind('.')
     suffix = base_url[dot:]
     name = base_url[:dot]
+
+    print("Prefix used: [" + prefix + "]")
+    print("Domain name used: [" + name + "]")
+    print("Suffix used: [" + suffix + "]")
+    print("Path value used: [" + path + "]\n")
+
     return (prefix, name, suffix, path)
 
 
@@ -72,7 +87,7 @@ def extract_soup_links(b_soup, url_parts):
     a_tags = b_soup.find_all('a')
     links = []
 
-    for href in [a_tag.get('href').lower() for a_tag in a_tags if a_tag.get('href')]:
+    for href in [a_tag.get('href', '').lower() for a_tag in a_tags]:
         if not href:
             continue
         elif href[0] == '#':
@@ -96,7 +111,7 @@ def extract_soup_images(b_soup, url_parts):
     full_url = base_url + url_parts[-1]
     img_tags = b_soup.find_all('img')
 
-    for img_src in [img_tag.get('src').lower() for img_tag in img_tags if img_tag.get('src')]:
+    for img_src in [img_tag.get('src', '').lower() for img_tag in img_tags]:
         if not img_src:
             continue
         elif URL_PREFIX_UNTRUSTED in img_src:
@@ -118,12 +133,12 @@ def extract_image(image_url):
     if extension not in IMAGE_FILE_FORMATS:
         return
 
-    response = req.get(image_url)
+    response = req.get(image_url, timeout=3)
 
-    if response.status_code != 200:
+    if not response:
         return
 
-    img_name = str(uuid.uuid4())[:18]
+    img_name = 'img_' + str(uuid.uuid4())[:18].replace('-', '_')
     image_filename = img_name + extension
 
     image_path = os.path.join(IMAGES_FOLDER, image_filename)
@@ -133,26 +148,31 @@ def extract_image(image_url):
 
 def soup_scraping(url, depth):
     url_parts = get_url_parts(url)
-
-    for part in url_parts:
-        print(part)
-    folder_path = url_parts[1] + url_parts[3]
-    folder_path = re.sub('[\/*:#-?"<>]','_',folder_path)   
-    set_folder_hierarchy(folder_path)
-
     valid_url = ''.join(url_parts)
 
-    response = req.get(valid_url)
+    folder_path = url_parts[1] + url_parts[3]
+    folder_path = re.sub(r'[*/\:#-?"<>]', '_', folder_path)
+    set_folder_hierarchy(folder_path)
+
+    try:
+        response = req.get(valid_url, timeout=3)
+    except:
+        print("Request to " + valid_url + " timed out.\n")
+        return
+
+    if not response:
+        print("Response status code was " + str(response.status_code) +
+              "\nTerminating extraction...\n")
+        return
+
     soup = BeautifulSoup(response.content, "html.parser")
 
     extract_soup_info(soup)
     extract_soup_links(soup, url_parts)
     extract_soup_images(soup, url_parts)
 
-    with open(LINKS_FILE_SEARCHABLE, 'rt') as links_f:
-        os.chdir('..')
-        os.chdir('..')
-        if depth > 0:
+    if depth > 0:
+        with open(LINKS_FILE_SEARCHABLE, 'rt') as links_f:
             url_childs = links_f.read().splitlines()
             for url_child in url_childs:
                 soup_scraping(url_child, depth-1)
@@ -163,8 +183,11 @@ def parse_arguments(args):
         return (None, 0)
     else:
         url = args[0]
-        print(url)
         depth = int(args[1]) if len(args) >= 2 and int(args[1]) > 0 else 0
+
+        print("\nHarvesting website: [" + url + "]")
+        print("With a depth of: [" + str(depth) + "]\n")
+
         return (url, depth)
 
 

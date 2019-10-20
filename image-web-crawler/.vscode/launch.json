@@ -10,22 +10,10 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            // "args": [],
-            // "args": [
-            //     "https://realpython.com/python-requests/"
-            // ],
-            // "args": [
-            //     "https://realpython.com/python-requests/",
-            //     "0"
-            // ],
             "args": [
                 "https://realpython.com/python-requests/",
                 "1"
             ],
-            // "args": [
-            //     "https://realpython.com/python-requests/",
-            //     "2"
-            // ],
         }
     ]
 }
