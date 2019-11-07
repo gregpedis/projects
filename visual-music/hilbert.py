@@ -2,7 +2,8 @@ import numpy as np
 import math
 
 
-def create_array_16():
+# Creates an 4 by 4 Hilbert Curve for testing purposes.
+def _create_array_16():
     return np.array([
         [0, 1, 14, 15],
         [3, 2, 13, 12],
@@ -10,7 +11,8 @@ def create_array_16():
         [5, 6, 9, 10]])
 
 
-def create_array_64():
+# Creates an 8 by 8 Hilbert Curve for testing purposes.
+def _create_array_64():
     return np.array([
         [0, 3, 4, 5, 58, 59, 60, 63],
         [1, 2, 7, 6, 57, 56, 61, 62],
@@ -23,13 +25,16 @@ def create_array_64():
     ])
 
 
-def rotnflip(mtrx):
+# Rotates 90 degrees and flips a matrix left to right.
+def _rotnflip(mtrx):
     try:
         return np.fliplr(np.rot90(mtrx))
     except:
         return mtrx
 
 
+# Takes a hilbert curve as a 2-D matrix
+# and returns a line as a 1-D matrix.
 def hilb_line(matrix):
     if matrix.size == 1:
         return [matrix[0][0]]
@@ -39,10 +44,12 @@ def hilb_line(matrix):
         tl = hilb_line(np.transpose(matrix[:halfd, :halfd]))
         bl = hilb_line(matrix[halfd:, :halfd])
         br = hilb_line(matrix[halfd:, halfd:])
-        tr = hilb_line(rotnflip(matrix[:halfd, halfd:]))
+        tr = hilb_line(_rotnflip(matrix[:halfd, halfd:]))
         return tl + bl + br + tr
 
 
+# Takes a line as a 1-D matrix
+# and returns a hilbert curve as a 2-D matrix.
 def hilb_space(line):
     if len(line) == 1:
         return line[0]
@@ -54,10 +61,69 @@ def hilb_space(line):
         matrix[:halfd, :halfd] = np.transpose(hilb_space(line[0: ln]))
         matrix[halfd:d, :halfd] = hilb_space(line[ln: 2*ln])
         matrix[halfd:d, halfd:d] = hilb_space(line[2*ln: 3*ln])
-        matrix[:halfd, halfd:d] = rotnflip(hilb_space(line[3*ln: 4*ln]))
+        matrix[:halfd, halfd:d] = _rotnflip(hilb_space(line[3*ln: 4*ln]))
         return matrix
 
 
+# Normalizes a 1-D matrix line to a hilbert-compliant 1-D line matrix.
+def normalize_line_size(line):
+    np_line = np.array(line)
+    l = np_line.size
+
+    if not l:
+        return None
+
+    np_line = np_line.reshape(l)
+
+    if l == 1:
+        return np_line[0]
+
+    # To use hilbert convertion the line has to be a power of 4.
+    scale = int(math.log(l, 4))
+    new_l = 4**scale
+
+    # Trimming the line, first doing floor division
+    # and then substraction in case of odd, which has non-zero remainder.
+    # Substraction is used instead of modulus %, since it's faster.
+    trim_l = l - new_l
+    trim_ll = trim_l // 2
+    trim_lr = trim_l - trim_ll
+
+    # Voila, returns a 1-D line matrix with hilbert-compliant size.
+    return np_line[trim_ll: -trim_lr]
+
+
+# Normalizes a 2-D matrix to a square, hilbert-compliant 2-D matrix.
+def normalize_matrix_size(matrix):
+    np_matrix = np.array(matrix)
+    x, y = np_matrix.shape
+    # Normalizing according to minimum dimension,
+    # since the result is a square matrix.
+    min_d = min(x, y)
+
+    if not min_d:
+        return None
+    if min_d == 1:
+        return np_matrix[0, 0]
+
+    # To use hilbert convertion each dimension
+    # has to be a power of 2.
+    scale = int(math.log2(min_d))
+    new_d = 2**scale
+
+    # Trimming each size, first doing floor division
+    # and then substraction in case of odd, which has non-zero remainder.
+    # Substraction is used instead of modulus %, since it's faster.
+    trim_x, trim_y = x-new_d, y-new_d
+    trim_xl, trim_yl = trim_x//2, trim_y//2
+    trim_xr, trim_yr = trim_x-trim_xl, trim_y-trim_yl
+
+    # Voila, returns a square 2-D matrix with hilbert-compliant size.
+    return np_matrix[trim_xl: -trim_xr, trim_yl: -trim_yr]
+
+
+# Compares the size and the elements, one by one,
+# of two matrices.
 def matrix_equality(left, right):
     for lxs, rxs in zip(left, right):
         for ly, ry in zip(lxs, rxs):
@@ -66,8 +132,9 @@ def matrix_equality(left, right):
     return True
 
 
+# Ze main entrypoint.
 if __name__ == "__main__":
-    matrix = create_array_64()
+    matrix = _create_array_64()
     line = hilb_line(matrix)
     print(line)
 
