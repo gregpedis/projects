@@ -1,0 +1,19 @@
+DB_FROM -> DB_TO
+
+-- start mssql_server docker container
+-- fucking user rights of mssql user are not allowing me to start the server
+
+-- backup DB_FROM to DISK_1
+-- done!
+
+
+-- restore DB_TO from DISK_1
+-- cannot connect :/
+
+
+
+FIXES
+
+-- make DISK path more flexible, bash permissions fuck me
+- make the entire shit parametriz-able
+
