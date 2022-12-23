@@ -1,8 +1,0 @@
-sqlcmd -S 127.0.0.1,1433 -U sa -P '<sapassword>' -i db_restore.sql -v DATABASE='ShitDB' -v DISK='/home/kenji/trash/here.txt'
-
-
-
-
-
-/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1,1433 -U sa -P '<sapassword>' -Q "restore Database SHITDB2 from disk = N'/var/opt/mssql/backup/shit.bak' with move 'ShitDB' to '/var/opt/mssql/data/ShitDB2.mdf', move 'ShitDB_log' to '/var/opt/mssql/data/ShitDB2_log.ldf'"
-

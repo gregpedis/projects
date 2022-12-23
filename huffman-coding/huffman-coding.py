@@ -111,6 +111,9 @@ if __name__ == '__main__':
     else:
         # Joining the input starting from 1, 
         # since the first argument is the script's name.
+#        f = open("input.txt", "rt")
+#        text_input = " ".join(f.readlines()).replace("\n", "")
+
         text_input = " ".join(argv[1:])
         print("\nStarting Huffman coding for input:")
         print(f"{text_input}\n")

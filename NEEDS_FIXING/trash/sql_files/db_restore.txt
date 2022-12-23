@@ -1,3 +1,0 @@
-RESTORE DATABASE SHITDB FROM DISK = N'/src/shit.bak'
-GO
-
