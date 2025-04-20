@@ -1,0 +1,1 @@
+input('Type any key to continue.','s');
