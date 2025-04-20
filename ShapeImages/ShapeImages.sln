@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShapeImages", "ShapeImages\ShapeImages.csproj", "{4C54C33B-7291-48B8-929B-745892443024}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShapeImages.Rasters", "ShapeImages.Rasters\ShapeImages.Rasters.csproj", "{27EB17C0-5626-46EA-9DA2-D59D579AEE1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C54C33B-7291-48B8-929B-745892443024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C54C33B-7291-48B8-929B-745892443024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C54C33B-7291-48B8-929B-745892443024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C54C33B-7291-48B8-929B-745892443024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27EB17C0-5626-46EA-9DA2-D59D579AEE1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27EB17C0-5626-46EA-9DA2-D59D579AEE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27EB17C0-5626-46EA-9DA2-D59D579AEE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27EB17C0-5626-46EA-9DA2-D59D579AEE1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {334BB491-4315-41C3-8DA0-373E69486169}
+	EndGlobalSection
+EndGlobal
